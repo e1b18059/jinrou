@@ -8,6 +8,14 @@
 
 <body>
   <h1>ようこそ、人狼の世界へ</h1>
+
+  <div th:if="${room}">
+    <ul>
+      今[[${room.users.size()}]]人がエントリーしています
+      エントリーユーザー
+      <li th:each="user : ${room.users}">[[${user}]]</li>
+    </ul>
+  </div>
 </body>
 
 </html>
