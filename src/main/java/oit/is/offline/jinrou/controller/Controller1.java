@@ -31,6 +31,11 @@ public class Controller1{
     return "room.html";
   }
 
+  @GetMapping("game")
+  public String game(){
+    return "game.html";
+  }
+
   @GetMapping("/start")
   public SseEmitter pushCount() {
     System.out.println("pushCount");
