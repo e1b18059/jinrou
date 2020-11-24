@@ -4,6 +4,18 @@
 <head>
   <meta charset="utf-8">
   <title>人狼</title>
+  <script>
+    //setTimeout("location.reload()",5000);
+    window.onload = function () {
+      var sse = new EventSource('/start');
+      sse.onmessage = function (event) {
+        console.log(event.data);
+        var start = document.getElementById("start");
+        var s = "<a href='/game'>game start</a>";
+        start.innerHTML = s;
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -11,10 +23,13 @@
 
   <div th:if="${room}">
     <ul>
-      今[[${room.users.size()}]]人がエントリーしています
+      今[[${room.users.size()}]]人がエントリーしています</br>
       エントリーユーザー
       <li th:each="user : ${room.users}">[[${user}]]</li>
     </ul>
+  </div>
+  <div id=start>
+
   </div>
 </body>
 
