@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Room {
-  ArrayList<String> users = new ArrayList<>();
+  public ArrayList<String> users = new ArrayList<>();
   int roomNo = 1;
 
   public void addUser(String name) {
