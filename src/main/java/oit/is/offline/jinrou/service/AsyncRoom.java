@@ -25,7 +25,6 @@ public class AsyncRoom {
         if(room.users.size() < 2){
           continue;
         }
-        System.out.println(count);
         emitter.send(count);
       }
     } catch (Exception e) {

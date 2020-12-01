@@ -23,6 +23,7 @@ public class Controller1{
   @Autowired
   AsyncRoom acroom;
 
+
   @GetMapping("/room")
   public String room(Principal prin, ModelMap model) {
     String loginUser = prin.getName();
@@ -38,13 +39,20 @@ public class Controller1{
 
   @GetMapping("/start")
   public SseEmitter pushCount() {
-    System.out.println("pushCount");
+
 
     // push処理の秘密兵器．これを利用してブラウザにpushする
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
     final SseEmitter sseEmitter = new SseEmitter();
     this.acroom.count(sseEmitter);
     return sseEmitter;
+  }
+  @GetMapping("/random")
+  public String random(){
+    Room player = new Room();
+    player.addUser("qwertyu");
+    System.out.println(player.users.size());
+    return "game.html";
   }
 
 }
