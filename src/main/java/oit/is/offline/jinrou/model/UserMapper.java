@@ -10,4 +10,6 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface UserMapper{
 
+  @Update("UPDATE JINROU SET USERNAME = #{name} WHERE ID = #{ran}")
+  void update(User user);
 }

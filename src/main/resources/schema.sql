@@ -7,3 +7,5 @@ CREATE TABLE jinrou(
   jinei INT NOT NULL,
   dora INT NOT NULL
 );
+
+
