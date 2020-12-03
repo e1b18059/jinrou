@@ -17,12 +17,10 @@ import oit.is.offline.jinrou.model.RandomRole;
 import oit.is.offline.jinrou.model.UserMapper;
 import oit.is.offline.jinrou.model.User;
 
-
-
 @Controller
-public class Controller1{
+public class Controller1 {
   int count = 0;
-  
+
   @Autowired
   Room room;
   @Autowired
@@ -30,8 +28,6 @@ public class Controller1{
 
   @Autowired
   UserMapper userMapper;
-
-
 
   @GetMapping("/room")
   public String room(Principal prin, ModelMap model) {
@@ -42,21 +38,32 @@ public class Controller1{
   }
 
   @GetMapping("/game")
-  public String game(){
+  public String game(ModelMap model) {
     RandomRole random = new RandomRole();
     User user = new User();
     int i, ran;
     int num = room.getUsers().size();
 
     count++;
-    if(count == num){
-      for(i = 1; i<= num; i++){
+    if (count == num) {
+      for (i = 1; i <= num; i++) {
         ran = random.Random(num);
-        user.setName("user"+i);
+        user.setName("user" + i);
         user.setRan(ran);
         userMapper.update(user);
       }
+      model.addAttribute("i", i);
     }
+    return "game.html";
+  }
+
+  @GetMapping("/role")
+  public String role(ModelMap model, Principal prin) {
+    String name;
+    String loginUser = prin.getName();
+
+    name = userMapper.getUser(loginUser);
+    model.addAttribute("rolename", name);
     return "game.html";
   }
 
