@@ -19,4 +19,5 @@ public class User {
   public void setRan(int ran) {
     this.ran = ran;
   }
+
 }
