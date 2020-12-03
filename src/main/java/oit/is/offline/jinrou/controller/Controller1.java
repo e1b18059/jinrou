@@ -13,46 +13,58 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import oit.is.offline.jinrou.model.Room;
 import oit.is.offline.jinrou.service.AsyncRoom;
+import oit.is.offline.jinrou.model.RandomRole;
+import oit.is.offline.jinrou.model.UserMapper;
+import oit.is.offline.jinrou.model.User;
+
 
 
 @Controller
 public class Controller1{
-
+  int count = 0;
+  
   @Autowired
-  private Room room;
+  Room room;
   @Autowired
   AsyncRoom acroom;
+
+  @Autowired
+  UserMapper userMapper;
+
 
 
   @GetMapping("/room")
   public String room(Principal prin, ModelMap model) {
     String loginUser = prin.getName();
-    this.room.addUser(loginUser);
-    model.addAttribute("room", this.room);
+    room.addUser(loginUser);
+    model.addAttribute("room", room);
     return "room.html";
   }
 
-  @GetMapping("game")
+  @GetMapping("/game")
   public String game(){
+    RandomRole random = new RandomRole();
+    User user = new User();
+    int i, ran;
+    int num = room.getUsers().size();
+
+    count++;
+    if(count == num){
+      for(i = 1; i<= num; i++){
+        ran = random.Random(num);
+        user.setName("user"+i);
+        user.setRan(ran);
+        userMapper.update(user);
+      }
+    }
     return "game.html";
   }
 
   @GetMapping("/start")
-  public SseEmitter pushCount() {
-
-
-    // push処理の秘密兵器．これを利用してブラウザにpushする
-    // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
+  public SseEmitter Count() {
     final SseEmitter sseEmitter = new SseEmitter();
     this.acroom.count(sseEmitter);
     return sseEmitter;
-  }
-  @GetMapping("/random")
-  public String random(){
-    Room player = new Room();
-    player.addUser("qwertyu");
-    System.out.println(player.users.size());
-    return "game.html";
   }
 
 }
