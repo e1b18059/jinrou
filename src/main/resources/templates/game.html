@@ -3,17 +3,28 @@
 
 <head>
   <meta charset="utf-8">
+  <script>
+    window.onload = function () {
+
+      var sse = new EventSource('/time');
+      sse.onmessage = function (event) {
+        console.log(event.data);
+        document.getElementById("timer").textContent = event.data + "秒";
+      }
+    }
+  </script>
   <title>人狼</title>
 </head>
 
 <body>
-  <a>
-    ・ランダムに役職を付与
-    ・役職用のページを表示させる
-    ・全体チャット
-    ・投票用のリンクを時間で出す
-    ・時間の表示
-  </a>
+  <style>
+    #timer {
+      position: absolute;
+      top: 70px;
+      left: 100px;
+      font-size: 70px;
+    }
+  </style>
   <div>
     <h1><a href='/role'>役職を表示する</a></h1>
   </div>
@@ -35,6 +46,8 @@
   <div th:if="${rolename eq '狂人'}">
     あなたは「狂人」です。
   </div>
+
+  <p id="timer"></p>
 
 </body>
 

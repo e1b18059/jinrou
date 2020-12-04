@@ -20,6 +20,7 @@ import oit.is.offline.jinrou.model.User;
 @Controller
 public class Controller1 {
   int count = 0;
+  int counttime = 0;
 
   @Autowired
   Room room;
@@ -71,6 +72,18 @@ public class Controller1 {
   public SseEmitter Count() {
     final SseEmitter sseEmitter = new SseEmitter();
     this.acroom.count(sseEmitter);
+    return sseEmitter;
+  }
+
+  @GetMapping("/time")
+  public SseEmitter pushCount(Principal prin) {
+    String user = "user1";
+    int num = room.getUsers().size();
+    String nowUser = prin.getName();
+    counttime++;
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.acroom.time(sseEmitter, nowUser);
+
     return sseEmitter;
   }
 
