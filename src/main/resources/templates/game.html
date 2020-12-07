@@ -9,6 +9,11 @@
       var sse = new EventSource('/time');
       sse.onmessage = function (event) {
         console.log(event.data);
+        if (event.data == 0) {
+          var vote = document.getElementById("voting");
+          var script = "<a href = '/vote'>投票ページに移動する</a>";
+          vote.innerHTML = script;
+        }
         document.getElementById("timer").textContent = event.data + "秒";
       }
     }
@@ -48,6 +53,7 @@
   </div>
 
   <p id="timer"></p>
+  <p id="voting"></p>
 
 </body>
 

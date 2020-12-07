@@ -34,7 +34,7 @@ public class AsyncRoom {
     }
   }
 
-  int time = 300;
+  int time = 10;
 
   @Async
   public void time(SseEmitter emitter, String user) {
@@ -42,8 +42,13 @@ public class AsyncRoom {
       try {
         TimeUnit.SECONDS.sleep(1);// 1秒STOP
         emitter.send(time);// ここでsendすると引数をブラウザにpushする
-        if(user=="user1") time--;
-        if(time==0) break;
+        if(user=="user1") {
+          time--;
+          if(time==0) {
+            emitter.send(time);// ここでsendすると引数をブラウザにpushする
+          break;
+          }
+        }
       } catch (Exception e) {
         // 例外の名前とメッセージだけ表示する
         emitter.complete();// emitterの後始末．明示的にブラウザとの接続を一度切る．

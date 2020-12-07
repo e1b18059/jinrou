@@ -87,4 +87,11 @@ public class Controller1 {
     return sseEmitter;
   }
 
+  @GetMapping("/vote")
+  public String vote(ModelMap model) {
+    ArrayList<String> vote = userMapper.getvote();
+    model.addAttribute("vote", vote);
+    return "vote.html";
+  }
+
 }
