@@ -17,36 +17,39 @@ public class AsyncRoom {
 
   @Autowired
   Room room;
+
   @Async
   public void count(SseEmitter emitter) {
     try {
       while (true) {// 無限ループ
         TimeUnit.MILLISECONDS.sleep(500);
-        if(room.users.size() < 2){
+        if (room.users.size() < 2) {
           continue;
         }
         emitter.send(count);
       }
     } catch (Exception e) {
-      //emitter.complete();// emitterの後始末．明示的にブラウザとの接続を一度切る．
-    }finally{
+      // emitter.complete();// emitterの後始末．明示的にブラウザとの接続を一度切る．
+    } finally {
       emitter.complete();
     }
   }
 
-  int time = 10;
+  int time;
 
   @Async
   public void time(SseEmitter emitter, String user) {
+    time = 10;
     while (true) {// 無限ループ
       try {
         TimeUnit.SECONDS.sleep(1);// 1秒STOP
         emitter.send(time);// ここでsendすると引数をブラウザにpushする
-        if(user=="user1") {
+        if (user == "user1") {
           time--;
-          if(time==0) {
+          if (time <= 0) {
+            time = 0;
             emitter.send(time);// ここでsendすると引数をブラウザにpushする
-          break;
+            break;
           }
         }
       } catch (Exception e) {

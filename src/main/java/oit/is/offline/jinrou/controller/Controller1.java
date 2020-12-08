@@ -21,6 +21,7 @@ import oit.is.offline.jinrou.model.User;
 public class Controller1 {
   int count = 0;
   int counttime = 0;
+  int[] countUser = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
   @Autowired
   Room room;
@@ -89,9 +90,79 @@ public class Controller1 {
 
   @GetMapping("/vote")
   public String vote(ModelMap model) {
-    ArrayList<String> vote = userMapper.getvote();
-    model.addAttribute("vote", vote);
+    int i;
+    int num = room.getUsers().size();
+    String username;
+    ArrayList<String> vote = new ArrayList<String>();
+    vote = userMapper.getvote();
+    for (i = 0; i < num; i++) {
+      username = "user" + (i + 1);
+      if (vote.get(i).equals(username)) {
+        model.addAttribute("user" + (i + 1), username);
+      }
+    }
     return "vote.html";
   }
 
+  @GetMapping("/user1")
+  public String user1() {
+    countUser[0]++;
+    System.out.println(countUser[0]);
+    return "game.html";
+  }
+
+  @GetMapping("/user2")
+  public String user2() {
+    countUser[1]++;
+    System.out.println(countUser[1]);
+    return "game.html";
+  }
+
+  @GetMapping("/user3")
+  public String user3() {
+    countUser[2]++;
+    return "game.html";
+  }
+
+  @GetMapping("/user4")
+  public String user4() {
+    countUser[3]++;
+    return "game.html";
+  }
+
+  @GetMapping("/user5")
+  public String user5() {
+    countUser[4]++;
+    return "game.html";
+  }
+
+  @GetMapping("/user6")
+  public String user6() {
+    countUser[5]++;
+    return "game.html";
+  }
+
+  @GetMapping("/user7")
+  public String user7() {
+    countUser[6]++;
+    return "game.html";
+  }
+
+  @GetMapping("/user8")
+  public String user8() {
+    countUser[7]++;
+    return "game.html";
+  }
+
+  @GetMapping("/user9")
+  public String user9() {
+    countUser[8]++;
+    return "game.html";
+  }
+
+  @GetMapping("/user10")
+  public String user10() {
+    countUser[9]++;
+    return "game.html";
+  }
 }
