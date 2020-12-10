@@ -18,4 +18,7 @@ public interface UserMapper {
 
   @Select("SELECT USERNAME FROM JINROU WHERE USERNAME IS NOT NULL AND dora = 0 ORDER BY USERNAME")
   ArrayList<String> getvote();
+
+  @Update("UPDATE JINROU SET DORA = 1 WHERE USERNAME = #{name}")
+  void vote(String name);
 }

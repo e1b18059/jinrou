@@ -6,6 +6,43 @@
 </head>
 
 <body>
+  <h1>
+    <a href="/voting">
+      投票結果を表示する
+    </a>
+  </h1>
+
+  <h1>
+    <a href="/revoting">
+      再投票結果を表示する
+    </a>
+  </h1>
+
+  <h2>
+    <p th:if="${death}">
+      投票により[[${death}]]が選ばれました。</br>
+      <a href="/night">
+        夜に移行する
+      </a>
+    </p>
+  </h2>
+
+  <h2>
+    <p th:if="${revote}">
+      投票数が同票だったため、再投票を行います。
+    </p>
+  </h2>
+
+  <h2>
+    <p th:if="${endvote}">
+      再投票数も同票だったため、この昼はだれも選ばれませんでした。</br>
+      <a href="/night">
+        夜に移行する
+      </a>
+    </p>
+  </h2>
+
+
   <p th:if="${user1}">
     <a href="/user1">[[${user1}]]</a>
   </p>
@@ -36,6 +73,11 @@
   <p th:if="${user10}">
     <a href="/user10">[[${user10}]]</a>
   </p>
+
+  <div>
+    
+  </div>
+
 </body>
 
 </html>

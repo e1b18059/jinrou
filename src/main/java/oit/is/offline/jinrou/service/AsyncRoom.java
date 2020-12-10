@@ -35,30 +35,33 @@ public class AsyncRoom {
     }
   }
 
-  int time;
+  int time = 10;
 
   @Async
   public void time(SseEmitter emitter, String user) {
-    time = 10;
-    while (true) {// 無限ループ
+    while (true) {
       try {
         TimeUnit.SECONDS.sleep(1);// 1秒STOP
         emitter.send(time);// ここでsendすると引数をブラウザにpushする
         if (user == "user1") {
           time--;
-          if (time <= 0) {
+        }
+        if (time < 0) {
             time = 0;
             emitter.send(time);// ここでsendすると引数をブラウザにpushする
             break;
           }
-        }
       } catch (Exception e) {
         // 例外の名前とメッセージだけ表示する
         emitter.complete();// emitterの後始末．明示的にブラウザとの接続を一度切る．
         break;
       }
     }
+  }
 
+  
+  public void resetTime(){
+    time = 10;
   }
 
 }
