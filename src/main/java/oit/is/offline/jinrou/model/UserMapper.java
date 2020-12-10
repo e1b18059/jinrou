@@ -16,9 +16,24 @@ public interface UserMapper {
   @Select("SELECT NAME FROM JINROU WHERE USERNAME = #{name}")
   String getUser(String name);
 
-  @Select("SELECT USERNAME FROM JINROU WHERE USERNAME IS NOT NULL AND dora = 0 ORDER BY USERNAME")
+  @Select("SELECT USERNAME FROM JINROU WHERE USERNAME IS NOT NULL AND DORA = 0 ORDER BY USERNAME")
   ArrayList<String> getvote();
 
   @Update("UPDATE JINROU SET DORA = 1 WHERE USERNAME = #{name}")
   void vote(String name);
+
+  @Select("SELECT SYUZOKU FROM JINROU WHERE USERNAME = #{name}")
+  int fortune(String name);
+
+  @Select("SELECT SYUZOKU FROM JINROU WHERE USERNAME = #{name}")
+  int shaman(String name);
+
+  @Select("SELECT USERNAME FROM JINROU WHERE USERNAME IS NOT NULL AND DORA = 1 ORDER BY USERNAME")
+  ArrayList<String> getdead();
+
+  @Update("UPDATE JINROU SET GUARD = 1 WHERE USERNAME = #{name}")
+  void knight(String name);
+
+  @Update("UPDATE JINROU SET DORA = 1 WHERE USERNAME = #{name}")
+  void werewolf(String name);
 }

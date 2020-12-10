@@ -3,6 +3,6 @@ CREATE TABLE jinrou(
   username CHAR,
   name CHAR NOT NULL,
   syuzoku INT NOT NULL,
-  jinei INT NOT NULL,
+  guard INT NOT NULL,
   dora INT NOT NULL
 );
