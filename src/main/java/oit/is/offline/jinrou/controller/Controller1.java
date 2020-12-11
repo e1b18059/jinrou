@@ -23,12 +23,16 @@ import oit.is.offline.jinrou.model.Vote;
 public class Controller1 {
   int count = 0;
   int[] countUser = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; // 誰が何票投票されたか
+  int[] recountUser = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; // 誰が何票投票されたか(再投票用)
+  int revoteflag = 0;
   int votecount = 0; // 投票した人数
   int num; // ルームにいる人数
   String voteduser; // 投票されたユーザー
   ArrayList<String> vote = new ArrayList<String>();
   int fortune = 0;
   int shaman = 0;
+  int f1 = 0; // 占い師用のフラグ
+  int f2 = 0; // 霊媒師用のフラグ
 
   @Autowired
   Room room;
@@ -113,20 +117,13 @@ public class Controller1 {
     int death = voting.Voting(vote.size(), countUser); // 吊るされるユーザー
 
     if (death == -1) { // 再投票へ
-      votecount++;
+      revoteflag = 1;
       String username;
       for (int i = 0; i < num; i++) {
         username = "user" + (i + 1);
         if (vote.get(i).equals(username)) {
           model.addAttribute("user" + (i + 1), username);
         }
-      }
-
-      if (votecount == vote.size()) { // これにアクセスした最後の人の時にカウントを初期化
-        for (int i = 0; i < num; i++) {
-          countUser[i] = 0;
-        }
-        votecount = 0;
       }
 
       model.addAttribute("revote", death);
@@ -140,7 +137,7 @@ public class Controller1 {
   @GetMapping("/revoting") // 再投票
   public String revoting(ModelMap model) {
     Vote voting = new Vote();
-    int death = voting.Voting(vote.size(), countUser); // 吊るされるユーザー
+    int death = voting.Voting(vote.size(), recountUser); // 吊るされるユーザー
 
     if (death == -1) {
       model.addAttribute("endvote", death);
@@ -156,97 +153,60 @@ public class Controller1 {
     String rolename;
     String loginUser = prin.getName();
     String username;
-    vote = userMapper.getvote();
-    rolename = userMapper.getUser(loginUser);
+    int alive = 0;
+    int dora;
 
     userMapper.vote(voteduser);
-    if (votecount == vote.size()) { // カウントを初期化
-      for (int i = 0; i < num; i++) {
-        countUser[i] = 0;
-      }
-      votecount = 0;
-    }
-
-    if (rolename == "霊媒師") {
-      vote = userMapper.getdead();
-    }
+    vote = userMapper.getvote();
+    alive = num - vote.size();
+    rolename = userMapper.getUser(loginUser);
 
     for (int i = 0; i < num; i++) {
-      username = "user" + (i + 1);
-      if (vote.get(i).equals(username)) {
-        model.addAttribute("user" + (i + 1), username);
+      dora = userMapper.getDora("user" + (i + 1));
+      if (dora == 0) {
+        username = "user" + (i + 1);
+        if (vote.get(i).equals(username)) {
+          model.addAttribute("user" + (i + 1), username);
+        }
       }
     }
 
     model.addAttribute("rolename", rolename);
+
+    if (rolename.equals("占い師")) {
+      f1++; // 占い師がアクセスした回数
+    }
+
+    if (rolename.equals("霊媒師")) {
+      vote = userMapper.getdead();
+      f2++; // 霊媒師がアクセスした回数
+    }
+
+    model.addAttribute("flag1", f1);
+    model.addAttribute("flag2", f2);
+    if (f1 > 1) {
+      f1 = 0; // 2回以上のアクセスでリセット
+    }
+    if (f2 > 1) {
+      f2 = 0; // 2回以上のアクセスでリセット
+    }
+
     return "night.html";
   }
 
-  @GetMapping("/user1")
-  public String user1() {
-    countUser[0]++;
-    return "vote.html";
-  }
-
-  @GetMapping("/user2")
-  public String user2() {
-    countUser[1]++;
-    return "vote.html";
-  }
-
-  @GetMapping("/user3")
-  public String user3() {
-    countUser[2]++;
-    return "vote.html";
-  }
-
-  @GetMapping("/user4")
-  public String user4() {
-    countUser[3]++;
-    return "vote.html";
-  }
-
-  @GetMapping("/user5")
-  public String user5() {
-    countUser[4]++;
-    return "vote.html";
-  }
-
-  @GetMapping("/user6")
-  public String user6() {
-    countUser[5]++;
-    return "vote.html";
-  }
-
-  @GetMapping("/user7")
-  public String user7() {
-    countUser[6]++;
-    return "vote.html";
-  }
-
-  @GetMapping("/user8")
-  public String user8() {
-    countUser[7]++;
-    return "vote.html";
-  }
-
-  @GetMapping("/user9")
-  public String user9() {
-    countUser[8]++;
-    return "vote.html";
-  }
-
-  @GetMapping("/user10")
-  public String user10() {
-    countUser[9]++;
+  @GetMapping("/vote/{num}")
+  public String user1(@PathVariable Integer num) {
+    if (revoteflag == 0) {
+      countUser[num - 1]++;
+    } else {
+      recountUser[num - 1]++;
+    }
     return "vote.html";
   }
 
   @GetMapping("/fortune/{name}") // 占い師
   public String fortune(@PathVariable String name, ModelMap model) {
-    System.out.println("Controller1.fortune");
     int fortune = userMapper.fortune(name);
-    System.out.println(fortune);
     model.addAttribute("fortune", fortune);
     model.addAttribute("syuzoku", fortune);
     return "night.html";

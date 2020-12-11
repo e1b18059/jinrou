@@ -9,96 +9,106 @@
 
   <div th:if="${rolename eq '占い師'}">
     <div>あなたは「占い師」です</div>
-    <div>確認したいユーザーを選択してください</div>
-    <p th:if="${user1}">
-      <a href="/fortune/user1">[[${user1}]]</a>
-    </p>
-    <p th:if="${user2}">
-      <a href="/fortune/user2">[[${user2}]]</a>
-    </p>
-    <p th:if="${user3}">
-      <a href="/fortune/user3">[[${user3}]]</a>
-    </p>
-    <p th:if="${user4}">
-      <a href="/fortune/user4">[[${user4}]]</a>
-    </p>
-    <p th:if="${user5}">
-      <a href="/fortune/user5">[[${user5}]]</a>
-    </p>
-    <p th:if="${user6}">
-      <a href="/fortune/user6">[[${user6}]]</a>
-    </p>
-    <p th:if="${user7}">
-      <a href="/fortune/user7">[[${user7}]]</a>
-    </p>
-    <p th:if="${user8}">
-      <a href="/fortune/user8">[[${user8}]]</a>
-    </p>
-    <p th:if="${user9}">
-      <a href="/fortune/user9">[[${user9}]]</a>
-    </p>
-    <p th:if="${user10}">
-      <a href="/fortune/user10">[[${user10}]]</a>
-    </p>
+    <div th:if="${flag1 eq 1}">
+      <div>確認したいユーザーを選択してください</div>
+      <p th:if="${user1}">
+        <a href="/fortune/user1">[[${user1}]]</a>
+      </p>
+      <p th:if="${user2}">
+        <a href="/fortune/user2">[[${user2}]]</a>
+      </p>
+      <p th:if="${user3}">
+        <a href="/fortune/user3">[[${user3}]]</a>
+      </p>
+      <p th:if="${user4}">
+        <a href="/fortune/user4">[[${user4}]]</a>
+      </p>
+      <p th:if="${user5}">
+        <a href="/fortune/user5">[[${user5}]]</a>
+      </p>
+      <p th:if="${user6}">
+        <a href="/fortune/user6">[[${user6}]]</a>
+      </p>
+      <p th:if="${user7}">
+        <a href="/fortune/user7">[[${user7}]]</a>
+      </p>
+      <p th:if="${user8}">
+        <a href="/fortune/user8">[[${user8}]]</a>
+      </p>
+      <p th:if="${user9}">
+        <a href="/fortune/user9">[[${user9}]]</a>
+      </p>
+      <p th:if="${user10}">
+        <a href="/fortune/user10">[[${user10}]]</a>
+      </p>
+    </div>
   </div>
   <div th:if="${fortune}">
-    <p th:if="${syuzoku eq 0}">
-      選んだユーザーは人狼側です
-    </p>
     <p th:if="${syuzoku eq 1}">
-      選んだユーザーは平民側です
+      選んだユーザーは「平民側」です
     </p>
+    <p th:if="${syuzoku eq 2}">
+      選んだユーザーは「人狼側」です
+    </p>
+    <a href="/night">占いを終了し、前のページに戻る</a>
   </div>
 
   <div th:if="${rolename eq '霊媒師'}">
     <div>あなたは「霊媒師」です</div>
-    <div>確認したいユーザーを選択してください</div>
-    <p th:if="${user1}">
-      <a href="/shaman/user1">[[${user1}]]</a>
-    </p>
-    <p th:if="${user2}">
-      <a href="/shaman/user2">[[${user2}]]</a>
-    </p>
-    <p th:if="${user3}">
-      <a href="/shaman/user3">[[${user3}]]</a>
-    </p>
-    <p th:if="${user4}">
-      <a href="/shaman/user4">[[${user4}]]</a>
-    </p>
-    <p th:if="${user5}">
-      <a href="/shaman/user5">[[${user5}]]</a>
-    </p>
-    <p th:if="${user6}">
-      <a href="/shaman/user6">[[${user6}]]</a>
-    </p>
-    <p th:if="${user7}">
-      <a href="/shaman/user7">[[${user7}]]</a>
-    </p>
-    <p th:if="${user8}">
-      <a href="/shaman/user8">[[${user8}]]</a>
-    </p>
-    <p th:if="${user9}">
-      <a href="/shaman/user9">[[${user9}]]</a>
-    </p>
-    <p th:if="${user10}">
-      <a href="/shaman/user10">[[${user10}]]</a>
-    </p>
+    <div th:if="${flag2 eq 1}">
+      <div>確認したいユーザーを選択してください</div>
+      <p th:if="${user1}">
+        <a href="/shaman/user1">[[${user1}]]</a>
+      </p>
+      <p th:if="${user2}">
+        <a href="/shaman/user2">[[${user2}]]</a>
+      </p>
+      <p th:if="${user3}">
+        <a href="/shaman/user3">[[${user3}]]</a>
+      </p>
+      <p th:if="${user4}">
+        <a href="/shaman/user4">[[${user4}]]</a>
+      </p>
+      <p th:if="${user5}">
+        <a href="/shaman/user5">[[${user5}]]</a>
+      </p>
+      <p th:if="${user6}">
+        <a href="/shaman/user6">[[${user6}]]</a>
+      </p>
+      <p th:if="${user7}">
+        <a href="/shaman/user7">[[${user7}]]</a>
+      </p>
+      <p th:if="${user8}">
+        <a href="/shaman/user8">[[${user8}]]</a>
+      </p>
+      <p th:if="${user9}">
+        <a href="/shaman/user9">[[${user9}]]</a>
+      </p>
+      <p th:if="${user10}">
+        <a href="/shaman/user10">[[${user10}]]</a>
+      </p>
+    </div>
   </div>
   <div th:if="${shaman}">
-    <p th:if="${syuzoku eq 0}">
-      選んだユーザーは人狼側です
-    </p>
     <p th:if="${syuzoku eq 1}">
-      選んだユーザーは平民側です
+      選んだユーザーは「平民側」です
     </p>
+    <p th:if="${syuzoku eq 2}">
+      選んだユーザーは「人狼側」です
+    </p>
+    <a href="/night">霊媒を終了し、前のページに戻る</a>
   </div>
+
   <div th:if="${rolename eq '人狼'}">
     <div>あなたは「人狼」です</div>
-    <div>襲撃したいユーザーを選択してください</div>
+    <div>襲撃したいユーザーを選択してください
+
+    </div>
   </div>
   <div th:if="${rolename eq '騎士'}">
     <div>あなたは「騎士」です</div>
     <div>守りたいユーザーを選択してください</div>
+
   </div>
 
 </body>

@@ -36,4 +36,7 @@ public interface UserMapper {
 
   @Update("UPDATE JINROU SET DORA = 1 WHERE USERNAME = #{name}")
   void werewolf(String name);
+
+  @Select("SELECT DORA FROM JINROU WHERE USERNAME = #{name}")
+  int getDora(String name);
 }
