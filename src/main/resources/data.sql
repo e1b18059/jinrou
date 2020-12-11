@@ -1,6 +1,6 @@
 INSERT INTO jinrou (name, syuzoku, guard, dora) VALUES ('人狼', 2, 0, 0);
-INSERT INTO jinrou (name, syuzoku, guard, dora) VALUES ('占い師', 1, 0, 0);
 INSERT INTO jinrou (name, syuzoku, guard, dora) VALUES ('霊媒師', 1, 0, 0);
+INSERT INTO jinrou (name, syuzoku, guard, dora) VALUES ('騎士', 1, 0, 0);
 INSERT INTO jinrou (name, syuzoku, guard, dora) VALUES ('平民', 1, 0, 0);
 INSERT INTO jinrou (name, syuzoku, guard, dora) VALUES ('平民', 1, 0, 0);
 INSERT INTO jinrou (name, syuzoku, guard, dora) VALUES ('人狼', 2, 0, 0);

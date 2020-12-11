@@ -153,32 +153,37 @@ public class Controller1 {
     String rolename;
     String loginUser = prin.getName();
     String username;
-    int alive = 0;
+    int dead = 0;
     int dora;
 
     userMapper.vote(voteduser);
     vote = userMapper.getvote();
-    alive = num - vote.size();
     rolename = userMapper.getUser(loginUser);
 
-    for (int i = 0; i < num; i++) {
-      dora = userMapper.getDora("user" + (i + 1));
-      if (dora == 0) {
-        username = "user" + (i + 1);
-        if (vote.get(i).equals(username)) {
-          model.addAttribute("user" + (i + 1), username);
-        }
-      }
-    }
+
 
     model.addAttribute("rolename", rolename);
 
     if (rolename.equals("占い師")) {
+      for (int i = 0; i < num; i++) {
+      dora = userMapper.getDora("user" + (i + 1));
+      if (dora == 0) {
+        username = "user" + (i + 1);
+        model.addAttribute("user" + (i + 1), username);
+      }
+    }
       f1++; // 占い師がアクセスした回数
     }
 
     if (rolename.equals("霊媒師")) {
       vote = userMapper.getdead();
+      for (int i = 0; i < num; i++) {
+      dora = userMapper.getDora("user" + (i + 1));
+      if (dora == 1) {
+        username = "user" + (i + 1);
+          model.addAttribute("user" + (i + 1), username);
+      }
+      }
       f2++; // 霊媒師がアクセスした回数
     }
 
