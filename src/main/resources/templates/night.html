@@ -101,8 +101,43 @@
 
   <div th:if="${rolename eq '人狼'}">
     <div>あなたは「人狼」です</div>
-    <div>襲撃したいユーザーを選択してください
-
+    <div th:if="${flag4 eq 1}">
+    <div>襲撃したいユーザーを選択してください</div>
+    <p th:if="${user1}">
+      <a href="/werewolf/user1">[[${user1}]]</a>
+    </p>
+    <p th:if="${user2}">
+      <a href="/werewolf/user2">[[${user2}]]</a>
+    </p>
+    <p th:if="${user3}">
+      <a href="/werewolf/user3">[[${user3}]]</a>
+    </p>
+    <p th:if="${user4}">
+      <a href="/werewolf/user4">[[${user4}]]</a>
+    </p>
+    <p th:if="${user5}">
+      <a href="/werewolf/user5">[[${user5}]]</a>
+    </p>
+    <p th:if="${user6}">
+      <a href="/werewolf/user6">[[${user6}]]</a>
+    </p>
+    <p th:if="${user7}">
+      <a href="/werewolf/user7">[[${user7}]]</a>
+    </p>
+    <p th:if="${user8}">
+      <a href="/werewolf/user8">[[${user8}]]</a>
+    </p>
+    <p th:if="${user9}">
+      <a href="/werewolf/user9">[[${user9}]]</a>
+    </p>
+    <p th:if="${user10}">
+      <a href="/werewolf/user10">[[${user10}]]</a>
+    </p>
+    </div>
+    </div>
+    <div th:if="${werewolf}">
+      今夜は[[${werewolf}]]を襲撃します。</br>
+      <a href="/night">人狼の夜の行動を終了し、前のページに戻る</a>
     </div>
   </div>
   <div th:if="${rolename eq '騎士'}">
