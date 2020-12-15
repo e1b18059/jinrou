@@ -33,6 +33,7 @@ public class Controller1 {
   int shaman = 0;
   int f1 = 0; // 占い師用のフラグ
   int f2 = 0; // 霊媒師用のフラグ
+  int f3 = 0; // 騎士用のフラグ
 
   @Autowired
   Room room;
@@ -187,13 +188,28 @@ public class Controller1 {
       f2++; // 霊媒師がアクセスした回数
     }
 
+    if (rolename.equals("騎士")) {
+      for (int i = 0; i < num; i++) {
+      dora = userMapper.getDora("user" + (i + 1));
+      if (dora == 0) {
+        username = "user" + (i + 1);
+        model.addAttribute("user" + (i + 1), username);
+      }
+    }
+      f3++; // 騎士がアクセスした回数
+    }
+
     model.addAttribute("flag1", f1);
     model.addAttribute("flag2", f2);
+    model.addAttribute("flag3", f3);
     if (f1 > 1) {
       f1 = 0; // 2回以上のアクセスでリセット
     }
     if (f2 > 1) {
       f2 = 0; // 2回以上のアクセスでリセット
+    }
+    if (f3 > 1) {
+      f3 = 0; // 2回以上のアクセスでリセット
     }
 
     return "night.html";
@@ -222,6 +238,13 @@ public class Controller1 {
     int shaman = userMapper.shaman(name);
     model.addAttribute("shaman", shaman);
     model.addAttribute("syuzoku", shaman);
+    return "night.html";
+  }
+
+  @GetMapping("/knight/{name}") // 騎士
+  public String knight(@PathVariable String name, ModelMap model) {
+    userMapper.knight(name);
+    model.addAttribute("knight", name);
     return "night.html";
   }
 
