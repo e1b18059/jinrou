@@ -35,6 +35,8 @@ public class Controller1 {
   int f2 = 0; // 霊媒師用のフラグ
   int f3 = 0; // 騎士用のフラグ
   int f4 = 0; // 人狼用のフラグ
+  int jflag = 0; //最初の人狼用のフラグ
+  String attackdeuser = ""; //襲撃されたユーザー
 
   @Autowired
   Room room;
@@ -169,7 +171,7 @@ public class Controller1 {
     if (rolename.equals("占い師")) {
       for (int i = 0; i < num; i++) {
       dora = userMapper.getDora("user" + (i + 1));
-      if (dora == 0) {
+      if (dora == 0) { //&& i != 1
         username = "user" + (i + 1);
         model.addAttribute("user" + (i + 1), username);
       }
@@ -192,7 +194,7 @@ public class Controller1 {
     if (rolename.equals("騎士")) {
       for (int i = 0; i < num; i++) {
         dora = userMapper.getDora("user" + (i + 1));
-        if (dora == 0) {
+        if (dora == 0) { //&& i != 2
           username = "user" + (i + 1);
           model.addAttribute("user" + (i + 1), username);
         }
@@ -200,21 +202,33 @@ public class Controller1 {
       f3++; // 騎士がアクセスした回数
     }
 
-    if (rolename.equals("人狼")) {
+    if (rolename.equals("人狼") && jflag != 0) {
+      f4=0;
+      if(attackdeuser != ""){
+        model.addAttribute("at", attackdeuser);
+      }else{
+      model.addAttribute("jinrou", jflag);
+      }
+    }
+
+    if (rolename.equals("人狼") && jflag == 0) {
       for (int i = 0; i < num; i++) {
         dora = userMapper.getDora("user" + (i + 1));
-        if (dora == 0) {
+        if (dora == 0) { //(&& i == 0 || i == 5)
           username = "user" + (i + 1);
           model.addAttribute("user" + (i + 1), username);
         }
       }
       f4++; // 人狼がアクセスした回数
+      jflag++;
     }
+
 
     model.addAttribute("flag1", f1);
     model.addAttribute("flag2", f2);
     model.addAttribute("flag3", f3);
     model.addAttribute("flag4", f4);
+
     if (f1 > 1) {
       f1 = 0; // 2回以上のアクセスでリセット
     }
@@ -224,9 +238,7 @@ public class Controller1 {
     if (f3 > 1) {
       f3 = 0; // 2回以上のアクセスでリセット
     }
-    if (f4 > 1) {
-      f4 = 0; // 2回以上のアクセスでリセット
-    }
+
 
     return "night.html";
   }
@@ -266,9 +278,16 @@ public class Controller1 {
 
   @GetMapping("/werewolf/{name}") // 人狼
   public String werewolf(@PathVariable String name, ModelMap model) {
+    attackdeuser = name;
     userMapper.werewolf(name);
     model.addAttribute("werewolf", name);
     return "night.html";
+  }
+
+  @GetMapping("/noon")
+  public String noon() {
+
+    return "noon.html";
   }
 
 }
