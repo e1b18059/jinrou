@@ -34,6 +34,7 @@ public class Controller1 {
   int f1 = 0; // 占い師用のフラグ
   int f2 = 0; // 霊媒師用のフラグ
   int f3 = 0; // 騎士用のフラグ
+  int f4 = 0; // 人狼用のフラグ
 
   @Autowired
   Room room;
@@ -190,18 +191,30 @@ public class Controller1 {
 
     if (rolename.equals("騎士")) {
       for (int i = 0; i < num; i++) {
-      dora = userMapper.getDora("user" + (i + 1));
-      if (dora == 0) {
-        username = "user" + (i + 1);
-        model.addAttribute("user" + (i + 1), username);
+        dora = userMapper.getDora("user" + (i + 1));
+        if (dora == 0) {
+          username = "user" + (i + 1);
+          model.addAttribute("user" + (i + 1), username);
+        }
       }
-    }
       f3++; // 騎士がアクセスした回数
+    }
+
+    if (rolename.equals("人狼")) {
+      for (int i = 0; i < num; i++) {
+        dora = userMapper.getDora("user" + (i + 1));
+        if (dora == 0) {
+          username = "user" + (i + 1);
+          model.addAttribute("user" + (i + 1), username);
+        }
+      }
+      f4++; // 人狼がアクセスした回数
     }
 
     model.addAttribute("flag1", f1);
     model.addAttribute("flag2", f2);
     model.addAttribute("flag3", f3);
+    model.addAttribute("flag4", f4);
     if (f1 > 1) {
       f1 = 0; // 2回以上のアクセスでリセット
     }
@@ -210,6 +223,9 @@ public class Controller1 {
     }
     if (f3 > 1) {
       f3 = 0; // 2回以上のアクセスでリセット
+    }
+    if (f4 > 1) {
+      f4 = 0; // 2回以上のアクセスでリセット
     }
 
     return "night.html";
@@ -245,6 +261,13 @@ public class Controller1 {
   public String knight(@PathVariable String name, ModelMap model) {
     userMapper.knight(name);
     model.addAttribute("knight", name);
+    return "night.html";
+  }
+
+  @GetMapping("/werewolf/{name}") // 人狼
+  public String werewolf(@PathVariable String name, ModelMap model) {
+    userMapper.werewolf(name);
+    model.addAttribute("werewolf", name);
     return "night.html";
   }
 
