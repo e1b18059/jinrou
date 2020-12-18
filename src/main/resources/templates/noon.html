@@ -1,2 +1,28 @@
-投票カウントの初期化
-revoteflagの初期化
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <h1>太陽が昇りました
+    <br></br>
+  </h1>
+  <div th:unless="${flag}">
+    <h2>みなさんの生存を確認中....</h2>
+    <script>setTimeout("location.reload()",2000);</script>
+  </div>
+  <div th:if="${flag eq 1}">
+    <h2>[[${name}]]が殺されました</h2>
+  </div>
+  <div th:if="${flag eq 2}">
+    <h2>昨夜は誰も殺されませんでした</h2>
+  </div>
+
+
+
+
+</body>
+
+</html>
