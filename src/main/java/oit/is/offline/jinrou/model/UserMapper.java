@@ -39,4 +39,16 @@ public interface UserMapper {
 
   @Select("SELECT DORA FROM JINROU WHERE USERNAME = #{name}")
   int getDora(String name);
+
+  @Select("SELECT NAME FROM JINROU WHERE USERNAME = #{name}")
+  String getRole(String name);
+
+  @Select("SELECT GUARD FROM JINROU WHERE USERNAME = #{name}")
+  int getGuard(String name);
+
+  @Update("UPDATE JINROU SET GUARD = 0 WHERE GUARD = 1")
+  void initGuard();
+
+  @Select("SELECT COUNT(*) FROM JINROU WHERE USERNAME IS NOT NULL AND DORA = 0")
+  int getAlive(); // 生きている人の人数
 }

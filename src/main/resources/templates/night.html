@@ -6,6 +6,15 @@
 </head>
 
 <body>
+  <h1>夜になりました<br></br></h1>
+
+  <div th:if="${rolename eq '平民'}">
+    <p>あなたは「平民」です</p>
+  </div>
+
+  <div th:if="${rolename eq '狂人'}">
+    <p>あなたは「狂人」です</p>
+  </div>
 
   <div th:if="${rolename eq '占い師'}">
     <div>あなたは「占い師」です</div>
@@ -43,9 +52,10 @@
       </p>
     </div>
   </div>
+
   <div th:if="${fortune}">
     <p th:if="${syuzoku eq 1}">
-      選んだユーザーは「平民側」です
+      選んだユーザーは「村人側」です
     </p>
     <p th:if="${syuzoku eq 2}">
       選んだユーザーは「人狼側」です
@@ -89,9 +99,10 @@
       </p>
     </div>
   </div>
+
   <div th:if="${shaman}">
     <p th:if="${syuzoku eq 1}">
-      選んだユーザーは「平民側」です
+      選んだユーザーは「村人側」です
     </p>
     <p th:if="${syuzoku eq 2}">
       選んだユーザーは「人狼側」です
@@ -143,14 +154,14 @@
       <a href="/night">襲撃結果を表示する</a>
     </div>
   </div>
-    <div th:if="${werewolf}">
-      今夜は[[${werewolf}]]を襲撃します。</br>
-      <a href="/noon">人狼の夜の行動を終了し、前のページに戻る</a>
-    </div>
-    <div th:if="${at}">
-      今夜は[[${at}]]を襲撃します。</br>
-      <a href="/noon">人狼の夜の行動を終了し、前のページに戻る</a>
-    </div>
+  <div th:if="${werewolf}">
+    今夜は[[${werewolf}]]を襲撃します。</br>
+    <a href="/noon">人狼の夜の行動を終了し、前のページに戻る</a>
+  </div>
+  <div th:if="${at}">
+    今夜は[[${at}]]を襲撃します。</br>
+    <a href="/noon">人狼の夜の行動を終了し、前のページに戻る</a>
+  </div>
   </div>
   <div th:if="${rolename eq '騎士'}">
     <div>あなたは「騎士」です</div>
@@ -191,9 +202,6 @@
   <div th:if="${knight}">
     今夜は[[${knight}]]を守ります。</br>
     <a href="/noon">騎士の夜の行動を終了し、前のページに戻る</a>
-  </div>
-
-
   </div>
 
 </body>

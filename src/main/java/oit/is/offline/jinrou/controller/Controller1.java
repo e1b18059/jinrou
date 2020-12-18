@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import oit.is.offline.jinrou.model.Room;
+import oit.is.offline.jinrou.model.Noon;
 import oit.is.offline.jinrou.service.AsyncRoom;
 import oit.is.offline.jinrou.model.RandomRole;
 import oit.is.offline.jinrou.model.UserMapper;
@@ -24,22 +25,25 @@ public class Controller1 {
   int count = 0;
   int[] countUser = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; // 誰が何票投票されたか
   int[] recountUser = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; // 誰が何票投票されたか(再投票用)
-  int revoteflag = 0;
+  int revoteflag = 0; // 再投票用フラグ
   int votecount = 0; // 投票した人数
   int num; // ルームにいる人数
   String voteduser; // 投票されたユーザー
   ArrayList<String> vote = new ArrayList<String>();
-  int fortune = 0;
-  int shaman = 0;
   int f1 = 0; // 占い師用のフラグ
   int f2 = 0; // 霊媒師用のフラグ
   int f3 = 0; // 騎士用のフラグ
   int f4 = 0; // 人狼用のフラグ
-  int jflag = 0; //最初の人狼用のフラグ
-  String attackdeuser = ""; //襲撃されたユーザー
+  int jflag = 0; // 最初の人狼用のフラグ
+  String attackdeuser = ""; // 襲撃されたユーザー
+  int countnoon = 0; // noon.htmlに入った人数
 
   @Autowired
   Room room;
+
+  @Autowired
+  Noon noon;
+
   @Autowired
   AsyncRoom acroom;
 
@@ -159,34 +163,34 @@ public class Controller1 {
     String username;
     int dead = 0;
     int dora;
+    String name;
 
     userMapper.vote(voteduser);
     vote = userMapper.getvote();
     rolename = userMapper.getUser(loginUser);
 
-
-
     model.addAttribute("rolename", rolename);
 
     if (rolename.equals("占い師")) {
       for (int i = 0; i < num; i++) {
-      dora = userMapper.getDora("user" + (i + 1));
-      if (dora == 0) { //&& i != 1
-        username = "user" + (i + 1);
-        model.addAttribute("user" + (i + 1), username);
+        dora = userMapper.getDora("user" + (i + 1));
+        name = userMapper.getRole("user" + (i + 1));
+        if (dora == 0 && !name.equals("占い師")) {
+          username = "user" + (i + 1);
+          model.addAttribute("user" + (i + 1), username);
+        }
       }
-    }
       f1++; // 占い師がアクセスした回数
     }
 
     if (rolename.equals("霊媒師")) {
       vote = userMapper.getdead();
       for (int i = 0; i < num; i++) {
-      dora = userMapper.getDora("user" + (i + 1));
-      if (dora == 1) {
-        username = "user" + (i + 1);
+        dora = userMapper.getDora("user" + (i + 1));
+        if (dora == 1) {
+          username = "user" + (i + 1);
           model.addAttribute("user" + (i + 1), username);
-      }
+        }
       }
       f2++; // 霊媒師がアクセスした回数
     }
@@ -194,7 +198,8 @@ public class Controller1 {
     if (rolename.equals("騎士")) {
       for (int i = 0; i < num; i++) {
         dora = userMapper.getDora("user" + (i + 1));
-        if (dora == 0) { //&& i != 2
+        name = userMapper.getRole("user" + (i + 1));
+        if (dora == 0 && !name.equals("騎士")) {
           username = "user" + (i + 1);
           model.addAttribute("user" + (i + 1), username);
         }
@@ -203,18 +208,20 @@ public class Controller1 {
     }
 
     if (rolename.equals("人狼") && jflag != 0) {
-      f4=0;
-      if(attackdeuser != ""){
+      f4 = 0;
+      if (attackdeuser != "") {
         model.addAttribute("at", attackdeuser);
-      }else{
-      model.addAttribute("jinrou", jflag);
+        jflag = 0;
+      } else {
+        model.addAttribute("jinrou", jflag);
       }
     }
 
     if (rolename.equals("人狼") && jflag == 0) {
       for (int i = 0; i < num; i++) {
         dora = userMapper.getDora("user" + (i + 1));
-        if (dora == 0) { //(&& i == 0 || i == 5)
+        name = userMapper.getRole("user" + (i + 1));
+        if (dora == 0 && !name.equals("人狼")) {
           username = "user" + (i + 1);
           model.addAttribute("user" + (i + 1), username);
         }
@@ -222,7 +229,6 @@ public class Controller1 {
       f4++; // 人狼がアクセスした回数
       jflag++;
     }
-
 
     model.addAttribute("flag1", f1);
     model.addAttribute("flag2", f2);
@@ -238,7 +244,6 @@ public class Controller1 {
     if (f3 > 1) {
       f3 = 0; // 2回以上のアクセスでリセット
     }
-
 
     return "night.html";
   }
@@ -279,14 +284,40 @@ public class Controller1 {
   @GetMapping("/werewolf/{name}") // 人狼
   public String werewolf(@PathVariable String name, ModelMap model) {
     attackdeuser = name;
-    userMapper.werewolf(name);
     model.addAttribute("werewolf", name);
     return "night.html";
   }
 
   @GetMapping("/noon")
-  public String noon() {
+  public String noon(Principal prin, ModelMap model) {
+    int guard = 2;
+    int nooncount = 0;
+    String loginUser = prin.getName();
+    noon.addUser(loginUser);
+    nooncount = noon.getUsers().size(); // noon.htmlにアクセスした人数
+    num = room.getUsers().size(); // ゲームに参加している人数
 
+    if (nooncount == num) {
+      guard = userMapper.getGuard(attackdeuser);
+      if (guard == 0) {
+        userMapper.werewolf(attackdeuser);
+        model.addAttribute("name", attackdeuser);
+        model.addAttribute("flag", 1);
+      } else if (guard == 1) {
+        model.addAttribute("flag", 2);
+      }
+      // userMapper.initGuard(); // guardの初期化
+      revoteflag = 0; // 再投票用フラグの初期化
+      votecount = 0; // 投票した人数の初期化
+      // attackdeuser = ""; // 襲撃されたユーザーの初期化
+
+      for (int i = 0; i < num; i++) {
+        countUser[i] = 0; // 投票情報の初期化
+        recountUser[i] = 0; // 投票情報の初期化（再投票用）
+      }
+    }
+    // noon.initUser(); // noon.htmlにアクセスした人の配列を初期化
+    // 次のページ（夜？）で↑のやつとguard, attackdeuserの初期化をしたい。
     return "noon.html";
   }
 
