@@ -16,6 +16,9 @@ public interface UserMapper {
   @Select("SELECT NAME FROM JINROU WHERE USERNAME = #{name}")
   String getUser(String name);
 
+  @Select("SELECT USERNAME FROM JINROU WHERE USERNAME != #{name} AND USERNAME IS NOT NULL AND NAME = '人狼'")
+  String getwerewolf(String name);
+
   @Select("SELECT USERNAME FROM JINROU WHERE USERNAME IS NOT NULL AND DORA = 0 ORDER BY USERNAME")
   ArrayList<String> getvote();
 

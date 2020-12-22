@@ -33,24 +33,11 @@
   <div>
     <h1><a href='/role'>役職を表示する</a></h1>
   </div>
-  <div th:if="${rolename eq '平民'}">
-    あなたは「平民」です
-  </div>
-  <div th:if="${rolename eq '人狼'}">
-    あなたは「人狼」です
-  </div>
-  <div th:if="${rolename eq '占い師'}">
-    あなたは「占い師」です
-  </div>
-  <div th:if="${rolename eq '霊媒師'}">
-    あなたは「霊媒師」です
-  </div>
-  <div th:if="${rolename eq '騎士'}">
-    あなたは「騎士」です
-  </div>
-  <div th:if="${rolename eq '狂人'}">
-    あなたは「狂人」です
-  </div>
+  <div th:if="${rolename}">
+    あなたは「[[${rolename}]]」です
+    <div th:if="${werewolf}">
+      もう一人の人狼は[[${werewolf}]]です。
+    </div>
 
   <p id="timer"></p>
   <p id="voting"></p>

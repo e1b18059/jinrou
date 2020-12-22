@@ -85,6 +85,10 @@ public class Controller1 {
 
     name = userMapper.getUser(loginUser);
     model.addAttribute("rolename", name);
+    if(name.equals("人狼") && num >= 2){
+      String werewolf = userMapper.getwerewolf(loginUser);
+      model.addAttribute("werewolf", werewolf);
+    }
     return "game.html";
   }
 
