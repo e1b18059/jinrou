@@ -52,6 +52,9 @@ public interface UserMapper {
   @Update("UPDATE JINROU SET GUARD = 0 WHERE GUARD = 1")
   void initGuard();
 
-  @Select("SELECT COUNT(*) FROM JINROU WHERE USERNAME IS NOT NULL AND DORA = 0")
-  int getAlive(); // 生きている人の人数
+  @Select("SELECT COUNT(*) FROM JINROU WHERE USERNAME IS NOT NULL AND SYUZOKU = 1 AND DORA = 0")
+  int getHumanAlive(); // 生きている村人の人数
+
+  @Select("SELECT COUNT(*) FROM JINROU WHERE USERNAME IS NOT NULL AND SYUZOKU = 2 AND DORA = 0")
+  int getJinrouAlive(); // 生きている人狼の人数
 }
