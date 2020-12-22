@@ -6,23 +6,9 @@
 </head>
 
 <body>
-  <h1>太陽が昇りました
-    <br></br>
-  </h1>
-  <div th:unless="${flag}">
-    <h2>みなさんの生存を確認中....</h2>
-    <script>setTimeout("location.reload()",2000);</script>
-  </div>
-  <div th:if="${flag eq 1}">
-    <h2>[[${name}]]が殺されました</h2>
-  </div>
-  <div th:if="${flag eq 2}">
-    <h2>昨夜は誰も殺されませんでした</h2>
-  </div>
-
-
-
-
+<div th:if="${hwin}">人陣営の勝ちです!!!</div>
+<div th:if="${jwin}">人狼陣営の勝ちです!!!</div>
+<div th:if="${continue}">決着がつかなかったので議論を始めてください</div>
 </body>
 
 </html>

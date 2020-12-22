@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Noon {
+public class Morning {
   public ArrayList<String> users = new ArrayList<String>();
 
   public void addUser(String name) {

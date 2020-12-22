@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import oit.is.offline.jinrou.model.Room;
-import oit.is.offline.jinrou.model.Noon;
+import oit.is.offline.jinrou.model.Morning;
 import oit.is.offline.jinrou.service.AsyncRoom;
 import oit.is.offline.jinrou.model.RandomRole;
 import oit.is.offline.jinrou.model.UserMapper;
@@ -36,13 +36,13 @@ public class Controller1 {
   int f4 = 0; // 人狼用のフラグ
   int jflag = 0; // 最初の人狼用のフラグ
   String attackdeuser = ""; // 襲撃されたユーザー
-  int countnoon = 0; // noon.htmlに入った人数
+  int countmorning = 0; // morning.htmlに入った人数
 
   @Autowired
   Room room;
 
   @Autowired
-  Noon noon;
+  Morning morning;
 
   @Autowired
   AsyncRoom acroom;
@@ -85,7 +85,7 @@ public class Controller1 {
 
     name = userMapper.getUser(loginUser);
     model.addAttribute("rolename", name);
-    if(name.equals("人狼") && num >= 2){
+    if(name.equals("人狼") && num >= 6){
       String werewolf = userMapper.getwerewolf(loginUser);
       model.addAttribute("werewolf", werewolf);
     }
@@ -113,7 +113,7 @@ public class Controller1 {
   public String vote(ModelMap model) {
     int i;
     String username;
-    noon.initUser(); // 初期化
+    morning.initUser(); // 初期化
     userMapper.initGuard(); // 初期化
     attackdeuser = ""; // 初期化
     jflag = 0; // 初期化
@@ -173,85 +173,95 @@ public class Controller1 {
     int dora;
     String name;
 
+    int hcnt, jcnt;
     userMapper.vote(voteduser);
-    vote = userMapper.getvote();
-    rolename = userMapper.getUser(loginUser);
+    hcnt = userMapper.getHumanAlive();
+    jcnt = userMapper.getJinrouAlive();
 
-    model.addAttribute("rolename", rolename);
+    if (jcnt == 0)
+      model.addAttribute("hwin", hcnt);
+    else if (hcnt <= jcnt)
+      model.addAttribute("jwin", jcnt);
+    else {
+      model.addAttribute("continue", hcnt);
+      vote = userMapper.getvote();
+      rolename = userMapper.getUser(loginUser);
 
-    if (rolename.equals("占い師")) {
-      for (int i = 0; i < num; i++) {
-        dora = userMapper.getDora("user" + (i + 1));
-        name = userMapper.getRole("user" + (i + 1));
-        if (dora == 0 && !name.equals("占い師")) {
-          username = "user" + (i + 1);
-          model.addAttribute("user" + (i + 1), username);
+      model.addAttribute("rolename", rolename);
+
+      if (rolename.equals("占い師")) {
+        for (int i = 0; i < num; i++) {
+          dora = userMapper.getDora("user" + (i + 1));
+          name = userMapper.getRole("user" + (i + 1));
+          if (dora == 0 && !name.equals("占い師")) {
+            username = "user" + (i + 1);
+            model.addAttribute("user" + (i + 1), username);
+          }
+        }
+        f1++; // 占い師がアクセスした回数
+      }
+
+      if (rolename.equals("霊媒師")) {
+        vote = userMapper.getdead();
+        for (int i = 0; i < num; i++) {
+          dora = userMapper.getDora("user" + (i + 1));
+          if (dora == 1) {
+            username = "user" + (i + 1);
+            model.addAttribute("user" + (i + 1), username);
+          }
+        }
+        f2++; // 霊媒師がアクセスした回数
+      }
+
+      if (rolename.equals("騎士")) {
+        for (int i = 0; i < num; i++) {
+          dora = userMapper.getDora("user" + (i + 1));
+          name = userMapper.getRole("user" + (i + 1));
+          if (dora == 0 && !name.equals("騎士")) {
+            username = "user" + (i + 1);
+            model.addAttribute("user" + (i + 1), username);
+          }
+        }
+        f3++; // 騎士がアクセスした回数
+      }
+
+      if (rolename.equals("人狼") && jflag != 0) {
+        f4 = 0;
+        if (attackdeuser != "") {
+          model.addAttribute("at", attackdeuser);
+        } else {
+          model.addAttribute("jinrou", jflag);
         }
       }
-      f1++; // 占い師がアクセスした回数
-    }
 
-    if (rolename.equals("霊媒師")) {
-      vote = userMapper.getdead();
-      for (int i = 0; i < num; i++) {
-        dora = userMapper.getDora("user" + (i + 1));
-        if (dora == 1) {
-          username = "user" + (i + 1);
-          model.addAttribute("user" + (i + 1), username);
+      if (rolename.equals("人狼") && jflag == 0) {
+        for (int i = 0; i < num; i++) {
+          dora = userMapper.getDora("user" + (i + 1));
+          name = userMapper.getRole("user" + (i + 1));
+          if (dora == 0 && !name.equals("人狼")) {
+            username = "user" + (i + 1);
+            model.addAttribute("user" + (i + 1), username);
+          }
         }
+        f4++; // 人狼がアクセスした回数
+        jflag++;
       }
-      f2++; // 霊媒師がアクセスした回数
-    }
 
-    if (rolename.equals("騎士")) {
-      for (int i = 0; i < num; i++) {
-        dora = userMapper.getDora("user" + (i + 1));
-        name = userMapper.getRole("user" + (i + 1));
-        if (dora == 0 && !name.equals("騎士")) {
-          username = "user" + (i + 1);
-          model.addAttribute("user" + (i + 1), username);
-        }
+      model.addAttribute("flag1", f1);
+      model.addAttribute("flag2", f2);
+      model.addAttribute("flag3", f3);
+      model.addAttribute("flag4", f4);
+
+      if (f1 > 1) {
+        f1 = 0; // 2回以上のアクセスでリセット
       }
-      f3++; // 騎士がアクセスした回数
-    }
-
-    if (rolename.equals("人狼") && jflag != 0) {
-      f4 = 0;
-      if (attackdeuser != "") {
-        model.addAttribute("at", attackdeuser);
-      } else {
-        model.addAttribute("jinrou", jflag);
+      if (f2 > 1) {
+        f2 = 0; // 2回以上のアクセスでリセット
+      }
+      if (f3 > 1) {
+        f3 = 0; // 2回以上のアクセスでリセット
       }
     }
-
-    if (rolename.equals("人狼") && jflag == 0) {
-      for (int i = 0; i < num; i++) {
-        dora = userMapper.getDora("user" + (i + 1));
-        name = userMapper.getRole("user" + (i + 1));
-        if (dora == 0 && !name.equals("人狼")) {
-          username = "user" + (i + 1);
-          model.addAttribute("user" + (i + 1), username);
-        }
-      }
-      f4++; // 人狼がアクセスした回数
-      jflag++;
-    }
-
-    model.addAttribute("flag1", f1);
-    model.addAttribute("flag2", f2);
-    model.addAttribute("flag3", f3);
-    model.addAttribute("flag4", f4);
-
-    if (f1 > 1) {
-      f1 = 0; // 2回以上のアクセスでリセット
-    }
-    if (f2 > 1) {
-      f2 = 0; // 2回以上のアクセスでリセット
-    }
-    if (f3 > 1) {
-      f3 = 0; // 2回以上のアクセスでリセット
-    }
-
     return "night.html";
   }
 
@@ -295,16 +305,16 @@ public class Controller1 {
     return "night.html";
   }
 
-  @GetMapping("/noon")
-  public String noon(Principal prin, ModelMap model) {
+  @GetMapping("/morning")
+  public String morning(Principal prin, ModelMap model) {
     int guard = 2;
-    int nooncount = 0;
+    int morningcount = 0;
     String loginUser = prin.getName();
-    noon.addUser(loginUser);
-    nooncount = noon.getUsers().size(); // noon.htmlにアクセスした人数
+    morning.addUser(loginUser);
+    morningcount = morning.getUsers().size(); // morning.htmlにアクセスした人数
     num = room.getUsers().size(); // ゲームに参加している人数
 
-    if (nooncount == num) {
+    if (morningcount == num) {
       guard = userMapper.getGuard(attackdeuser);
       if (guard == 0) {
         userMapper.werewolf(attackdeuser);
@@ -323,7 +333,19 @@ public class Controller1 {
         recountUser[i] = 0; // 投票情報の初期化（再投票用）
       }
     }
+    return "morning.html";
+  }
+
+  @GetMapping("/noon")
+  public String noon(Principal prin, ModelMap model) {
+    int hcnt, jcnt;
+    hcnt = userMapper.getHumanAlive();
+    jcnt = userMapper.getJinrouAlive();
+    if (jcnt == 0) model.addAttribute("hwin", hcnt);
+    else if (hcnt <= jcnt) model.addAttribute("jwin", jcnt);
+    else model.addAttribute("continue", hcnt);
     return "noon.html";
   }
+
 
 }

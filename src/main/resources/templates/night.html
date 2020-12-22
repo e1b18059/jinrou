@@ -6,7 +6,9 @@
 </head>
 
 <body>
-  <h1>夜になりました<br></br></h1>
+  <div th:if="${hwin}">人陣営の勝ちです!!!</div>
+  <div th:if="${jwin}">人狼陣営の勝ちです!!!</div>
+  <!--<div th:if="${continue}"><h1>夜になりました<br></br></h1>-->
 
   <div th:if="${rolename eq '平民'}">
     <p>あなたは「平民」です</p>
@@ -60,7 +62,7 @@
     <p th:if="${syuzoku eq 2}">
       選んだユーザーは「人狼側」です
     </p>
-    <a href="/noon">占いを終了し、昼のページに移動する</a>
+    <a href="/morning">占いを終了し、朝のページに移動する</a>
   </div>
 
   <div th:if="${rolename eq '霊媒師'}">
@@ -107,7 +109,7 @@
     <p th:if="${syuzoku eq 2}">
       選んだユーザーは「人狼側」です
     </p>
-    <a href="/noon">霊媒を終了し、昼のページに移動する</a>
+    <a href="/morning">霊媒を終了し、朝のページに移動する</a>
   </div>
 
   <div th:if="${rolename eq '人狼'}">
@@ -156,12 +158,11 @@
   </div>
   <div th:if="${werewolf}">
     今夜は[[${werewolf}]]を襲撃します。</br>
-    <a href="/noon">人狼の夜の行動を終了し、昼のページに移動する</a>
+    <a href="/morning">人狼の夜の行動を終了し、朝のページに移動する</a>
   </div>
   <div th:if="${at}">
     今夜は[[${at}]]を襲撃します。</br>
-    <a href="/noon">人狼の夜の行動を終了し、昼のページに移動する</a>
-  </div>
+    <a href="/morning">人狼の夜の行動を終了し、朝のページに移動する</a>
   </div>
   <div th:if="${rolename eq '騎士'}">
     <div>あなたは「騎士」です</div>
@@ -201,7 +202,7 @@
   </div>
   <div th:if="${knight}">
     今夜は[[${knight}]]を守ります。</br>
-    <a href="/noon">騎士の夜の行動を終了し、昼のページに移動する</a>
+    <a href="/morning">騎士の夜の行動を終了し、朝のページに移動する</a>
   </div>
 
 </body>
