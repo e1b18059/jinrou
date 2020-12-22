@@ -109,6 +109,10 @@ public class Controller1 {
   public String vote(ModelMap model) {
     int i;
     String username;
+    noon.initUser(); // 初期化
+    userMapper.initGuard(); // 初期化
+    attackdeuser = ""; // 初期化
+    jflag = 0; // 初期化
     vote = userMapper.getvote();
     for (i = 0; i < num; i++) {
       username = "user" + (i + 1);
@@ -211,7 +215,6 @@ public class Controller1 {
       f4 = 0;
       if (attackdeuser != "") {
         model.addAttribute("at", attackdeuser);
-        jflag = 0;
       } else {
         model.addAttribute("jinrou", jflag);
       }
@@ -316,8 +319,6 @@ public class Controller1 {
         recountUser[i] = 0; // 投票情報の初期化（再投票用）
       }
     }
-    // noon.initUser(); // noon.htmlにアクセスした人の配列を初期化
-    // 次のページ（夜？）で↑のやつとguard, attackdeuserの初期化をしたい。
     return "noon.html";
   }
 
