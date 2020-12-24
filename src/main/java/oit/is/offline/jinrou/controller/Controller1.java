@@ -37,6 +37,8 @@ public class Controller1 {
   int jflag = 0; // 最初の人狼用のフラグ
   String attackdeuser = ""; // 襲撃されたユーザー
   int countmorning = 0; // morning.htmlに入った人数
+  int alive;
+  int guard;
 
   @Autowired
   Room room;
@@ -172,11 +174,18 @@ public class Controller1 {
     int dead = 0;
     int dora;
     String name;
-
     int hcnt, jcnt;
+
+    alive = userMapper.getvote().size();
     userMapper.vote(voteduser);
     hcnt = userMapper.getHumanAlive();
     jcnt = userMapper.getJinrouAlive();
+
+    if(loginUser.equals(voteduser)){
+      model.addAttribute("deathuser", 1);
+    }else{
+      model.addAttribute("deathuser", 2);
+    }
 
     if (jcnt == 0)
       model.addAttribute("hwin", hcnt);
@@ -188,6 +197,8 @@ public class Controller1 {
       rolename = userMapper.getUser(loginUser);
 
       model.addAttribute("rolename", rolename);
+
+
 
       if (rolename.equals("占い師")) {
         for (int i = 0; i < num; i++) {
@@ -280,6 +291,8 @@ public class Controller1 {
     int fortune = userMapper.fortune(name);
     model.addAttribute("fortune", fortune);
     model.addAttribute("syuzoku", fortune);
+    model.addAttribute("continue", fortune);
+    model.addAttribute("deathuser", 2);
     return "night.html";
   }
 
@@ -288,6 +301,8 @@ public class Controller1 {
     int shaman = userMapper.shaman(name);
     model.addAttribute("shaman", shaman);
     model.addAttribute("syuzoku", shaman);
+    model.addAttribute("continue", shaman);
+    model.addAttribute("deathuser", 2);
     return "night.html";
   }
 
@@ -295,6 +310,8 @@ public class Controller1 {
   public String knight(@PathVariable String name, ModelMap model) {
     userMapper.knight(name);
     model.addAttribute("knight", name);
+    model.addAttribute("continue", name);
+    model.addAttribute("deathuser", 2);
     return "night.html";
   }
 
@@ -302,19 +319,20 @@ public class Controller1 {
   public String werewolf(@PathVariable String name, ModelMap model) {
     attackdeuser = name;
     model.addAttribute("werewolf", name);
+    model.addAttribute("continue", name);
+    model.addAttribute("deathuser", 2);
     return "night.html";
   }
 
   @GetMapping("/morning")
   public String morning(Principal prin, ModelMap model) {
-    int guard = 2;
     int morningcount = 0;
     String loginUser = prin.getName();
     morning.addUser(loginUser);
     morningcount = morning.getUsers().size(); // morning.htmlにアクセスした人数
-    num = room.getUsers().size(); // ゲームに参加している人数
+    alive = userMapper.getvote().size(); // ゲームに参加している人数
 
-    if (morningcount == num) {
+    if (morningcount >= alive) {
       guard = userMapper.getGuard(attackdeuser);
       if (guard == 0) {
         userMapper.werewolf(attackdeuser);
@@ -323,10 +341,9 @@ public class Controller1 {
       } else if (guard == 1) {
         model.addAttribute("flag", 2);
       }
-      // userMapper.initGuard(); // guardの初期化
+
       revoteflag = 0; // 再投票用フラグの初期化
       votecount = 0; // 投票した人数の初期化
-      // attackdeuser = ""; // 襲撃されたユーザーの初期化
 
       for (int i = 0; i < num; i++) {
         countUser[i] = 0; // 投票情報の初期化
@@ -337,13 +354,26 @@ public class Controller1 {
   }
 
   @GetMapping("/noon")
-  public String noon(Principal prin, ModelMap model) {
+  public String noon(ModelMap model, Principal prin) {
     int hcnt, jcnt;
+    String loginUser = prin.getName();
+    alive = userMapper.getvote().size();
     hcnt = userMapper.getHumanAlive();
     jcnt = userMapper.getJinrouAlive();
-    if (jcnt == 0) model.addAttribute("hwin", hcnt);
-    else if (hcnt <= jcnt) model.addAttribute("jwin", jcnt);
-    else model.addAttribute("continue", hcnt);
+    if (jcnt == 0) {
+      model.addAttribute("hwin", hcnt);
+    } else if (hcnt <= jcnt) {
+      model.addAttribute("jwin", jcnt);
+    } else{
+      model.addAttribute("continue", hcnt);
+    }
+
+    if(loginUser.equals(attackdeuser) && guard == 0){
+      model.addAttribute("deathuser", 1);
+    }else{
+      model.addAttribute("deathuser", 2);
+    }
+
     return "noon.html";
   }
 
