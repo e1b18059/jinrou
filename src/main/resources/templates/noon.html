@@ -6,9 +6,22 @@
 </head>
 
 <body>
-<div th:if="${hwin}">人陣営の勝ちです!!!</div>
-<div th:if="${jwin}">人狼陣営の勝ちです!!!</div>
-<div th:if="${continue}">決着がつかなかったので議論を始めてください</div>
+  <div th:if="${hwin}">
+    市民陣営の勝ちです!!!</br>
+    <a href="/logout">ログアウト</a>
+  </div>
+  <div th:if="${jwin}">
+    人狼陣営の勝ちです!!!</br>
+    <a href="/logout">ログアウト</a>
+  </div>
+  <div th:if="${continue}">
+    決着がつかなかったので議論を始めてください</br>
+    <div th:if="${deathuser eq 1}">
+      あなたは投票によって吊るされました。</br>
+      ログアウトして下さい。</br>
+      <a href="/logout">ログアウト</a>
+      <div th:if="${deathuser eq 2}"></div>
+    </div>
 </body>
 
 </html>

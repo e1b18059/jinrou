@@ -15,12 +15,14 @@
   </div>
   <div th:if="${flag eq 1}">
     <h2>[[${name}]]が殺されました</h2>
+    <a href="/noon">昼に移行します</a>
   </div>
   <div th:if="${flag eq 2}">
     <h2>昨夜は誰も殺されませんでした</h2>
+    <a href="/noon">昼に移行します</a>
   </div>
 
-  <a href="/noon">昼に移行します</a>
+
 
 
 </body>
