@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import oit.is.offline.jinrou.model.Room;
-import oit.is.offline.jinrou.model.Morning;
+import oit.is.offline.jinrou.model.PlayerNum;
 import oit.is.offline.jinrou.service.AsyncRoom;
 import oit.is.offline.jinrou.model.RandomRole;
 import oit.is.offline.jinrou.model.UserMapper;
@@ -29,7 +29,8 @@ public class Controller1 {
   int votecount = 0; // 投票した人数
   int num; // ルームにいる人数
   String voteduser; // 投票されたユーザー
-  ArrayList<String> vote = new ArrayList<String>();
+  ArrayList<String> player = new ArrayList<String>();
+  ArrayList<String> aliveplayer = new ArrayList<String>();
   int f1 = 0; // 占い師用のフラグ
   int f2 = 0; // 霊媒師用のフラグ
   int f3 = 0; // 騎士用のフラグ
@@ -44,7 +45,7 @@ public class Controller1 {
   Room room;
 
   @Autowired
-  Morning morning;
+  PlayerNum playernum;
 
   @Autowired
   AsyncRoom acroom;
@@ -61,14 +62,18 @@ public class Controller1 {
   }
 
   @GetMapping("/game")
-  public String game(ModelMap model) {
+  public String game(Principal prin, ModelMap model) {
     RandomRole random = new RandomRole();
     User user = new User();
     int i, ran;
+    int playercount;
+    String loginUser = prin.getName();
     num = room.getUsers().size();
+    playernum.addUser(loginUser);
+    playercount = playernum.getUsers().size(); // game.htmlにアクセスした人数
+    alive = userMapper.getvote().size(); // ゲームに参加している人数
 
-    count++;
-    if (count == num) {
+    if (playercount == num) {
       for (i = 1; i <= num; i++) {
         ran = random.Random(num);
         user.setName("user" + i);
@@ -76,7 +81,9 @@ public class Controller1 {
         userMapper.update(user);
       }
       model.addAttribute("i", i);
+      model.addAttribute("player", playercount);
     }
+
     return "game.html";
   }
 
@@ -87,10 +94,12 @@ public class Controller1 {
 
     name = userMapper.getUser(loginUser);
     model.addAttribute("rolename", name);
-    if(name.equals("人狼") && num >= 6){
+    if (name.equals("人狼") && num >= 6) {
       String werewolf = userMapper.getwerewolf(loginUser);
       model.addAttribute("werewolf", werewolf);
     }
+    model.addAttribute("player", 1);
+
     return "game.html";
   }
 
@@ -115,15 +124,22 @@ public class Controller1 {
   public String vote(ModelMap model) {
     int i;
     String username;
-    morning.initUser(); // 初期化
+    playernum.initUser(); // 初期化
     userMapper.initGuard(); // 初期化
     attackdeuser = ""; // 初期化
     jflag = 0; // 初期化
-    vote = userMapper.getvote();
+    f1 = 0; // 各役職のフラグ初期化
+    f2 = 0;
+    f3 = 0;
+    f4 = 0;
+    player = userMapper.getplayer();
+
     for (i = 0; i < num; i++) {
       username = "user" + (i + 1);
-      if (vote.get(i).equals(username)) {
-        model.addAttribute("user" + (i + 1), username);
+      if (player.get(i).equals(username)) {
+        if (userMapper.getDora(player.get(i)) == 0) {
+          model.addAttribute("user" + (i + 1), username);
+        }
       }
     }
     return "vote.html";
@@ -132,14 +148,15 @@ public class Controller1 {
   @GetMapping("/voting") // 1回目の投票
   public String voting(ModelMap model) {
     Vote voting = new Vote();
-    int death = voting.Voting(vote.size(), countUser); // 吊るされるユーザー
+    aliveplayer = userMapper.getvote();
+    int death = voting.Voting(aliveplayer.size(), countUser); // 吊るされるユーザー
 
     if (death == -1) { // 再投票へ
       revoteflag = 1;
       String username;
       for (int i = 0; i < num; i++) {
         username = "user" + (i + 1);
-        if (vote.get(i).equals(username)) {
+        if (aliveplayer.get(i).equals(username)) {
           model.addAttribute("user" + (i + 1), username);
         }
       }
@@ -155,7 +172,7 @@ public class Controller1 {
   @GetMapping("/revoting") // 再投票
   public String revoting(ModelMap model) {
     Vote voting = new Vote();
-    int death = voting.Voting(vote.size(), recountUser); // 吊るされるユーザー
+    int death = voting.Voting(aliveplayer.size(), recountUser); // 吊るされるユーザー
 
     if (death == -1) {
       model.addAttribute("endvote", death);
@@ -163,6 +180,7 @@ public class Controller1 {
       voteduser = "user" + death;
       model.addAttribute("death", voteduser);
     }
+
     return "vote.html";
   }
 
@@ -171,19 +189,20 @@ public class Controller1 {
     String rolename;
     String loginUser = prin.getName();
     String username;
-    int dead = 0;
     int dora;
     String name;
     int hcnt, jcnt;
+
+    acroom.resetTime();
 
     alive = userMapper.getvote().size();
     userMapper.vote(voteduser);
     hcnt = userMapper.getHumanAlive();
     jcnt = userMapper.getJinrouAlive();
 
-    if(loginUser.equals(voteduser)){
+    if (loginUser.equals(voteduser)) {
       model.addAttribute("deathuser", 1);
-    }else{
+    } else {
       model.addAttribute("deathuser", 2);
     }
 
@@ -193,12 +212,9 @@ public class Controller1 {
       model.addAttribute("jwin", jcnt);
     else {
       model.addAttribute("continue", hcnt);
-      vote = userMapper.getvote();
       rolename = userMapper.getUser(loginUser);
 
       model.addAttribute("rolename", rolename);
-
-
 
       if (rolename.equals("占い師")) {
         for (int i = 0; i < num; i++) {
@@ -213,7 +229,6 @@ public class Controller1 {
       }
 
       if (rolename.equals("霊媒師")) {
-        vote = userMapper.getdead();
         for (int i = 0; i < num; i++) {
           dora = userMapper.getDora("user" + (i + 1));
           if (dora == 1) {
@@ -328,8 +343,8 @@ public class Controller1 {
   public String morning(Principal prin, ModelMap model) {
     int morningcount = 0;
     String loginUser = prin.getName();
-    morning.addUser(loginUser);
-    morningcount = morning.getUsers().size(); // morning.htmlにアクセスした人数
+    playernum.addUser(loginUser);
+    morningcount = playernum.getUsers().size(); // morning.htmlにアクセスした人数
     alive = userMapper.getvote().size(); // ゲームに参加している人数
 
     if (morningcount >= alive) {
@@ -357,6 +372,7 @@ public class Controller1 {
   public String noon(ModelMap model, Principal prin) {
     int hcnt, jcnt;
     String loginUser = prin.getName();
+    String name;
     alive = userMapper.getvote().size();
     hcnt = userMapper.getHumanAlive();
     jcnt = userMapper.getJinrouAlive();
@@ -364,18 +380,25 @@ public class Controller1 {
       model.addAttribute("hwin", hcnt);
     } else if (hcnt <= jcnt) {
       model.addAttribute("jwin", jcnt);
-    } else{
+    } else {
       model.addAttribute("continue", hcnt);
     }
 
-    if(loginUser.equals(attackdeuser) && guard == 0){
+    if (loginUser.equals(attackdeuser) && guard == 0) {
       model.addAttribute("deathuser", 1);
-    }else{
+    } else {
       model.addAttribute("deathuser", 2);
+      System.out.println("ok");
+    }
+
+    name = userMapper.getUser(loginUser);
+    model.addAttribute("rolename", name);
+    if (name.equals("人狼") && num >= 6) {
+      String werewolf = userMapper.getwerewolf(loginUser);
+      model.addAttribute("werewolf", werewolf);
     }
 
     return "noon.html";
   }
-
 
 }

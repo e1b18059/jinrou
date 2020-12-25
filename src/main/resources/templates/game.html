@@ -3,21 +3,23 @@
 
 <head>
   <meta charset="utf-8">
-  <script>
-    window.onload = function () {
+  <div th:if="${player}">
+    <script>
+      window.onload = function () {
 
-      var sse = new EventSource('/time');
-      sse.onmessage = function (event) {
-        console.log(event.data);
-        if (event.data == 0) {
-          var vote = document.getElementById("voting");
-          var script = "<a href = '/vote'>投票ページに移動する</a>";
-          vote.innerHTML = script;
+        var sse = new EventSource('/time');
+        sse.onmessage = function (event) {
+          console.log(event.data);
+          if (event.data == 0) {
+            var vote = document.getElementById("voting");
+            var script = "<a href = '/vote'>投票ページに移動する</a>";
+            vote.innerHTML = script;
+          }
+          document.getElementById("timer").textContent = event.data + "秒";
         }
-        document.getElementById("timer").textContent = event.data + "秒";
       }
-    }
-  </script>
+    </script>
+  </div>
   <title>人狼</title>
 </head>
 
@@ -30,7 +32,11 @@
       font-size: 70px;
     }
   </style>
-  <div>
+  <div th:unless="${player}">
+    <h2>参加者を確認中....</h2>
+    <script>setTimeout("location.reload()",2000);</script>
+  </div>
+  <div th:if="${player}">
     <h1><a href='/role'>役職を表示する</a></h1>
   </div>
   <div th:if="${rolename}">
@@ -38,7 +44,7 @@
     <div th:if="${werewolf}">
       もう一人の人狼は[[${werewolf}]]です。
     </div>
-
+  </div>
   <p id="timer"></p>
   <p id="voting"></p>
 
