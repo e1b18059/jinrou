@@ -3,9 +3,33 @@
 
 <head>
   <meta charset="utf-8">
+  <script>
+    window.onload = function () {
+
+      var sse = new EventSource('/time');
+      sse.onmessage = function (event) {
+        console.log(event.data);
+        if (event.data == 0) {
+          var vote = document.getElementById("voting");
+          var script = "<a href = '/vote'>投票ページに移動する</a>";
+          vote.innerHTML = script;
+        }
+        document.getElementById("timer").textContent = event.data + "秒";
+      }
+    }
+  </script>
 </head>
 
 <body>
+  <style>
+    #timer {
+      position: absolute;
+      top: 70px;
+      left: 100px;
+      font-size: 70px;
+    }
+  </style>
+
   <div th:if="${hwin}">
     市民陣営の勝ちです!!!</br>
     <a href="/logout">ログアウト</a>
@@ -20,8 +44,19 @@
       あなたは投票によって吊るされました。</br>
       ログアウトして下さい。</br>
       <a href="/logout">ログアウト</a>
-      <div th:if="${deathuser eq 2}"></div>
     </div>
+    <div th:if="${deathuser eq 2}">
+      <div th:if="${rolename}">
+        あなたは「[[${rolename}]]」です
+        <div th:if="${werewolf}">
+          もう一人の人狼は[[${werewolf}]]です。
+        </div>
+      </div>
+      <p id="timer"></p>
+      <p id="voting"></p>
+
+    </div>
+  </div>
 </body>
 
 </html>

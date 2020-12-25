@@ -14,6 +14,8 @@ import oit.is.offline.jinrou.model.Room;
 @Service
 public class AsyncRoom {
   int count = 1;
+  int usercount = 0;
+  String firstname;
 
   @Autowired
   Room room;
@@ -39,18 +41,22 @@ public class AsyncRoom {
 
   @Async
   public void time(SseEmitter emitter, String user) {
+    usercount++;
+    if (usercount == 1) {
+      firstname = user;
+    }
     while (true) {
       try {
         TimeUnit.SECONDS.sleep(1);// 1秒STOP
         emitter.send(time);// ここでsendすると引数をブラウザにpushする
-        if (user == "user1") {
+        if (user == firstname) {
           time--;
         }
         if (time < 0) {
-            time = 0;
-            emitter.send(time);// ここでsendすると引数をブラウザにpushする
-            break;
-          }
+          time = 0;
+          emitter.send(time);// ここでsendすると引数をブラウザにpushする
+          break;
+        }
       } catch (Exception e) {
         // 例外の名前とメッセージだけ表示する
         emitter.complete();// emitterの後始末．明示的にブラウザとの接続を一度切る．
@@ -59,9 +65,10 @@ public class AsyncRoom {
     }
   }
 
-  
-  public void resetTime(){
+  public void resetTime() {
     time = 10;
+    usercount = 0;
+    firstname = "";
   }
 
 }
