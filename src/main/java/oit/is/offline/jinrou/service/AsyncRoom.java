@@ -2,8 +2,6 @@ package oit.is.offline.jinrou.service;
 
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -21,7 +19,7 @@ public class AsyncRoom {
   Room room;
 
   @Async
-  public void count(SseEmitter emitter) {
+  public void playercount(SseEmitter emitter) {
     try {
       while (true) {// 無限ループ
         TimeUnit.MILLISECONDS.sleep(500);
@@ -48,13 +46,13 @@ public class AsyncRoom {
     while (true) {
       try {
         TimeUnit.SECONDS.sleep(1);// 1秒STOP
-        emitter.send(time);// ここでsendすると引数をブラウザにpushする
+        emitter.send(time);
         if (user == firstname) {
           time--;
         }
         if (time < 0) {
           time = 0;
-          emitter.send(time);// ここでsendすると引数をブラウザにpushする
+          emitter.send(time);
           break;
         }
       } catch (Exception e) {
