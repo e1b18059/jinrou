@@ -9,7 +9,6 @@
     window.onload = function () {
       var sse = new EventSource('/start');
       sse.onmessage = function (event) {
-        console.log(event.data);
         var start = document.getElementById("start");
         var s = "<a href='/game'>ゲームスタート</a>";
         start.innerHTML = s;
@@ -28,8 +27,6 @@
       <li th:each="user : ${room.users}">[[${user}]]</li>
     </ul>
   </div>
-  <!-- <div th:if="${room.users.size() &gt;= 2}">
-    <a href='/game'>ゲームスタート</a>-->
   </div>
   <div id=start></div>
 </body>

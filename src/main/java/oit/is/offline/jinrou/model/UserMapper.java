@@ -2,7 +2,6 @@ package oit.is.offline.jinrou.model;
 
 import java.util.ArrayList;
 
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -14,15 +13,12 @@ public interface UserMapper {
   void update(User user);
 
   @Select("SELECT NAME FROM JINROU WHERE USERNAME = #{name}")
-  String getUser(String name);
+  String getRole(String name);
 
   @Select("SELECT USERNAME FROM JINROU WHERE USERNAME != #{name} AND USERNAME IS NOT NULL AND NAME = '人狼'")
   String getwerewolf(String name);
 
   @Select("SELECT USERNAME FROM JINROU WHERE USERNAME IS NOT NULL AND DORA = 0 ORDER BY USERNAME")
-  ArrayList<String> getvote();
-
-  @Select("SELECT USERNAME FROM JINROU WHERE USERNAME IS NOT NULL ORDER BY USERNAME")
   ArrayList<String> getplayer();
 
   @Update("UPDATE JINROU SET DORA = 1 WHERE USERNAME = #{name}")
@@ -45,9 +41,6 @@ public interface UserMapper {
 
   @Select("SELECT DORA FROM JINROU WHERE USERNAME = #{name}")
   int getDora(String name);
-
-  @Select("SELECT NAME FROM JINROU WHERE USERNAME = #{name}")
-  String getRole(String name);
 
   @Select("SELECT GUARD FROM JINROU WHERE USERNAME = #{name}")
   int getGuard(String name);
