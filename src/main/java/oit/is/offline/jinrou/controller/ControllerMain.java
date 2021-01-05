@@ -20,6 +20,7 @@ public class ControllerMain {
   int num; // ルームにいる人数
   int alive;
   int guard;
+  int roomcount = 0; // room.htmlのアクセス回数
 
   @Autowired
   Room room;
@@ -41,9 +42,24 @@ public class ControllerMain {
 
   @GetMapping("/room")
   public String room(Principal prin, ModelMap model) {
+    roomcount++;
+    if (roomcount == 1) { // room.htmlに最初にアクセスしたときだけ
+      room.initUser(); // roomのユーザ配列の初期化
+      playernum.initUser(); // playernumのユーザ配列の初期化
+      userMapper.initUser(); // ユーザネームの初期化
+      userMapper.initDora(); // 生死情報の初期化
+      acroom.resetTime(); // タイマーのリセット
+      cv.revoteflag = 0; // 再投票用フラグの初期化
+      cv.voteduser = ""; // 吊されるユーザーの初期化
+      for (int i = 0; i < num; i++) {
+        cv.countUser[i] = 0; // 投票情報の初期化
+        cv.recountUser[i] = 0; // 投票情報の初期化（再投票用
+      }
+    }
     String loginUser = prin.getName();
     room.addUser(loginUser);
     model.addAttribute("room", room);
+
     return "room.html";
   }
 
@@ -60,6 +76,9 @@ public class ControllerMain {
 
     if (playercount == num) {
       for (int i = 1; i <= num; i++) {
+        if (i == 1) {
+          random.initRondom();
+        }
         ran = random.Random(num);
         user.setName("user" + i);
         user.setRan(ran);
@@ -78,11 +97,14 @@ public class ControllerMain {
 
     rolename = userMapper.getRole(loginUser);
     model.addAttribute("rolename", rolename);
+    model.addAttribute("username", loginUser);
     if (rolename.equals("人狼") && num >= 6) {
       String werewolf = userMapper.getwerewolf(loginUser);
       model.addAttribute("werewolf", werewolf);
     }
     model.addAttribute("player", 1);
+
+    roomcount = 0; // room.htmlのアクセス回数の初期化
 
     return "game.html";
   }
@@ -124,7 +146,7 @@ public class ControllerMain {
     cv.revoteflag = 0; // 再投票用フラグの初期化
     for (int i = 0; i < num; i++) {
       cv.countUser[i] = 0; // 投票情報の初期化
-      cv.recountUser[i] = 0; // 投票情報の初期化（再投票用
+      cv.recountUser[i] = 0; // 投票情報の初期化（再投票用)
     }
 
     return "morning.html";
@@ -155,6 +177,8 @@ public class ControllerMain {
 
     rolename = userMapper.getRole(loginUser);
     model.addAttribute("rolename", rolename);
+    model.addAttribute("username", loginUser);
+
     if (rolename.equals("人狼") && num >= 6) {
       String werewolf = userMapper.getwerewolf(loginUser);
       model.addAttribute("werewolf", werewolf);

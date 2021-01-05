@@ -14,6 +14,7 @@ public class AsyncRoom {
   int count = 1;
   int usercount = 0;
   String firstname;
+  int time = 10;
 
   @Autowired
   Room room;
@@ -34,8 +35,6 @@ public class AsyncRoom {
       emitter.complete();
     }
   }
-
-  int time = 10;
 
   @Async
   public void time(SseEmitter emitter, String user) {

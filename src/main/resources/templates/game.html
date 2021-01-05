@@ -40,7 +40,7 @@
     <h1><a href='/role'>役職を表示する</a></h1>
   </div>
   <div th:if="${rolename}">
-    あなたは「[[${rolename}]]」です
+    あなたは [[${username}]]「[[${rolename}]]」です
     <div th:if="${werewolf}">
       もう一人の人狼は[[${werewolf}]]です。
     </div>

@@ -53,4 +53,10 @@ public interface UserMapper {
 
   @Select("SELECT COUNT(*) FROM JINROU WHERE USERNAME IS NOT NULL AND SYUZOKU = 2 AND DORA = 0")
   int getJinrouAlive(); // 生きている人狼の人数
+
+  @Update("UPDATE JINROU SET USERNAME = NULL WHERE USERNAME IS NOT NULL")
+  void initUser(); // 参加者の名前の初期化
+
+  @Update("UPDATE JINROU SET DORA = 0 WHERE DORA = 1")
+  void initDora(); // 生死情報の初期化
 }
