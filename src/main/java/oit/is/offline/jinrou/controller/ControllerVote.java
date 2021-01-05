@@ -21,6 +21,7 @@ public class ControllerVote {
   int num; // ルームにいる人数
   public String voteduser; // 投票されたユーザー
   ArrayList<String> aliveplayer = new ArrayList<String>(); // 生きているユーザーのユーザー名
+  int apnum;
 
   @Autowired
   Room room;
@@ -48,6 +49,7 @@ public class ControllerVote {
     userMapper.initGuard(); // 初期化
 
     aliveplayer = userMapper.getplayer();
+    apnum = aliveplayer.size();
     num = room.getUsers().size();
     for (int i = 0; i < num; i++) {
       int dora = userMapper.getDora("user" + (i + 1));
@@ -63,9 +65,7 @@ public class ControllerVote {
   @GetMapping("/voting") // 1回目の投票
   public String voting(ModelMap model) {
     Vote voting = new Vote();
-    aliveplayer = userMapper.getplayer();
-    int voted = voting.Voting(aliveplayer.size(), countUser); // 吊るされるユーザー
-    System.out.println("aliveplayer:"+aliveplayer.size()+"voted:"+voted);
+    int voted = voting.Voting(apnum, countUser); // 吊るされるユーザー
     if (voted == -1) { // 再投票へ
       revoteflag = 1;
       String username;

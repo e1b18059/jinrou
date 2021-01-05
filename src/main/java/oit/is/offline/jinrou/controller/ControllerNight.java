@@ -123,8 +123,11 @@ public class ControllerNight {
             model.addAttribute("user" + (i + 1), username);
           }
         }
-        f4++; // 人狼がアクセスした回数
-        jflag++;
+        if (loginUser.equals(cv.voteduser)) {
+        } else {
+          f4++; // 人狼がアクセスした回数
+          jflag++;
+        }
       }
 
       model.addAttribute("flag1", f1);
