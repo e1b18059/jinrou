@@ -43,7 +43,7 @@ public class ControllerNight {
     String name;
     int hcnt, jcnt;
 
-    acroom.resetTime(); //タイマーのリセット
+    acroom.resetTime(); // タイマーのリセット
     num = room.getUsers().size();
     userMapper.vote(cv.voteduser); // 投票されたユーザーの処刑
     hcnt = userMapper.getHumanAlive(); // 市民陣営の生きている人数
@@ -55,15 +55,16 @@ public class ControllerNight {
       model.addAttribute("deathuser", 2);
     }
 
-    if (jcnt == 0)
+    if (jcnt == 0) {
       model.addAttribute("hwin", hcnt);
-    else if (hcnt <= jcnt)
+    } else if (hcnt <= jcnt) {
       model.addAttribute("jwin", jcnt);
-    else {
+    } else {
       model.addAttribute("continue", hcnt);
 
       rolename = userMapper.getRole(loginUser);
       model.addAttribute("rolename", rolename);
+      model.addAttribute("username", loginUser);
 
       // 占い師がだれを占うか選択する用のリンク表示
       if (rolename.equals("占い師")) {

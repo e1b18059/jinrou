@@ -27,4 +27,8 @@ public class Room {
     this.users = users;
   }
 
+  public void initUser() { // 配列usersの初期化
+    users.clear();
+  }
+
 }

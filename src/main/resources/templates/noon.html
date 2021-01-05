@@ -32,11 +32,13 @@
 
   <div th:if="${hwin}">
     市民陣営の勝ちです!!!</br>
-    <a href="/logout">ログアウト</a>
+    <a href="/logout">ログアウト</a></br>
+    <a href="/room">最初の画面に戻る</a>
   </div>
   <div th:if="${jwin}">
     人狼陣営の勝ちです!!!</br>
-    <a href="/logout">ログアウト</a>
+    <a href="/logout">ログアウト</a></br>
+    <a href="/room">最初の画面に戻る</a>
   </div>
   <div th:if="${continue}">
     決着がつかなかったので議論を始めてください</br>
@@ -47,7 +49,7 @@
     </div>
     <div th:if="${deathuser eq 2}">
       <div th:if="${rolename}">
-        あなたは「[[${rolename}]]」です
+        あなたは [[${username}]]「[[${rolename}]]」です
         <div th:if="${werewolf}">
           もう一人の人狼は[[${werewolf}]]です。
         </div>
