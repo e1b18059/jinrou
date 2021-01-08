@@ -2,7 +2,7 @@ package oit.is.offline.jinrou.model;
 
 public class Vote {
 
-  public int Voting(int num, int[] count) {
+  public int Voting(int[] count) {
     int s = 0; // maxの時のユーザー番号
     int es = 0;
 

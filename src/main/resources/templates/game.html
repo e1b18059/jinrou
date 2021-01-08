@@ -10,7 +10,7 @@
         sse.onmessage = function (event) {
           if (event.data == 0) {
             var vote = document.getElementById("voting");
-            var script = "<a href = '/vote'>投票ページに移動する</a>";
+            var script = "<a href = '/vote'><h2>投票ページに移動する</h2></a>";
             vote.innerHTML = script;
           }
           document.getElementById("timer").textContent = event.data + "秒";
@@ -22,29 +22,33 @@
 </head>
 
 <body>
-  <style>
-    #timer {
-      position: absolute;
-      top: 70px;
-      left: 100px;
-      font-size: 70px;
-    }
-  </style>
+
   <div th:unless="${player}">
     <h2>参加者を確認中....</h2>
     <script>setTimeout("location.reload()",2000);</script>
   </div>
   <div th:if="${player}">
+    <div>役職を確認してください</div>
     <h1><a href='/role'>役職を表示する</a></h1>
   </div>
   <div th:if="${rolename}">
-    あなたは [[${username}]]「[[${rolename}]]」です
+    <h2>あなたは [[${username}]]「[[${rolename}]]」です</h2>
     <div th:if="${werewolf}">
       もう一人の人狼は[[${werewolf}]]です。
     </div>
   </div>
   <p id="timer"></p>
   <p id="voting"></p>
+
+  <div>タイマーが0になったら議論を終了して投票ページへ移行して下さい</div>
+  <style>
+    #timer {
+      position: absolute;
+      top: 170px;
+      left: 100px;
+      font-size: 70px;
+    }
+  </style>
 
 </body>
 
