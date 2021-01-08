@@ -62,6 +62,27 @@ public class AsyncRoom {
     }
   }
 
+  @Async
+  public void vote(SseEmitter emitter, int num, int[] count, int flag) {
+    int vc = 0; // 投票した人数
+    try {
+      for (int i = 0; i < 10; i++) {
+        vc += count[i];
+      }
+      if (vc == num) {
+        if (flag == 0) {
+          emitter.send(0);
+        } else if (flag == 1) {
+          emitter.send(1);
+        }
+      }
+    } catch (Exception e) {
+      emitter.complete();// emitterの後始末．明示的にブラウザとの接続を一度切る．
+    } finally {
+      emitter.complete();
+    }
+  }
+
   public void resetTime() {
     time = 10;
     usercount = 0;
