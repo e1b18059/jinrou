@@ -3,22 +3,35 @@
 
 <head>
   <meta charset="utf-8">
+  <script>
+    window.onload = function () {
+      while (true) {
+        var sse = new EventSource('/voteresult');
+        sse.onmessage = function (event) {
+          var vote = document.getElementById("voting");
+          var r;
+          if (event.data == 0) {
+            r = "<a href='/voting'>投票結果を表示する</a >";
+          } else if (event.data == 1) {
+            r = "<a href='/revoting'>再投票結果を表示する</a >";
+          }
+          voting.innerHTML = r;
+        }
+        break;
+      }
+    }
+  </script>
 </head>
 
 <body>
   <h1>投票の時間です
-    <br></br>
+    </br>
   </h1>
+  <h2>
+    投票後は全員が投票を終えるまでお待ちください
+  </h2>
   <h1>
-    <a href="/voting">
-      投票結果を表示する
-    </a>
-  </h1>
-
-  <h1>
-    <a href="/revoting">
-      再投票結果を表示する
-    </a>
+    <p id=voting></p>
   </h1>
 
   <h2>

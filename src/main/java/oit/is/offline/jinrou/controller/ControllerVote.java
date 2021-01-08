@@ -7,11 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import oit.is.offline.jinrou.model.Room;
 import oit.is.offline.jinrou.model.PlayerNum;
 import oit.is.offline.jinrou.model.UserMapper;
 import oit.is.offline.jinrou.model.Vote;
+import oit.is.offline.jinrou.service.AsyncRoom;
 
 @Controller
 public class ControllerVote {
@@ -34,6 +36,9 @@ public class ControllerVote {
 
   @Autowired
   ControllerNight cn;
+
+  @Autowired
+  AsyncRoom acroom;
 
   @GetMapping("/vote")
   public String vote(ModelMap model) {
@@ -88,7 +93,7 @@ public class ControllerVote {
   @GetMapping("/revoting") // 再投票
   public String revoting(ModelMap model) {
     Vote voting = new Vote();
-    int voted = voting.Voting(aliveplayer.size(), recountUser); // 吊るされるユーザー
+    int voted = voting.Voting(apnum, recountUser); // 吊るされるユーザー
 
     if (voted == -1) {
       model.addAttribute("endvote", voted);
@@ -108,6 +113,17 @@ public class ControllerVote {
       recountUser[num - 1]++;
     }
     return "vote.html";
+  }
+
+  @GetMapping("/voteresult")
+  public SseEmitter voteresult() {
+    final SseEmitter sseEmitter = new SseEmitter();
+    if (revoteflag == 0) {
+      this.acroom.vote(sseEmitter, apnum, countUser, revoteflag);
+    } else if(revoteflag == 1){
+      this.acroom.vote(sseEmitter, apnum, recountUser, revoteflag);
+    }
+    return sseEmitter;
   }
 
 }
