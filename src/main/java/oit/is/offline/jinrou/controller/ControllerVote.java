@@ -70,7 +70,7 @@ public class ControllerVote {
   @GetMapping("/voting") // 1回目の投票
   public String voting(ModelMap model) {
     Vote voting = new Vote();
-    int voted = voting.Voting(apnum, countUser); // 吊るされるユーザー
+    int voted = voting.Voting(countUser); // 吊るされるユーザー
     if (voted == -1) { // 再投票へ
       revoteflag = 1;
       String username;
@@ -93,7 +93,7 @@ public class ControllerVote {
   @GetMapping("/revoting") // 再投票
   public String revoting(ModelMap model) {
     Vote voting = new Vote();
-    int voted = voting.Voting(apnum, recountUser); // 吊るされるユーザー
+    int voted = voting.Voting(recountUser); // 吊るされるユーザー
 
     if (voted == -1) {
       model.addAttribute("endvote", voted);
@@ -118,6 +118,7 @@ public class ControllerVote {
   @GetMapping("/voteresult")
   public SseEmitter voteresult() {
     final SseEmitter sseEmitter = new SseEmitter();
+    System.out.println(apnum);
     if (revoteflag == 0) {
       this.acroom.vote(sseEmitter, apnum, countUser, revoteflag);
     } else if(revoteflag == 1){
