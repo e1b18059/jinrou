@@ -118,7 +118,6 @@ public class ControllerVote {
   @GetMapping("/voteresult")
   public SseEmitter voteresult() {
     final SseEmitter sseEmitter = new SseEmitter();
-    System.out.println(apnum);
     if (revoteflag == 0) {
       this.acroom.vote(sseEmitter, apnum, countUser, revoteflag);
     } else if(revoteflag == 1){

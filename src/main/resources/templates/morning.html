@@ -5,8 +5,18 @@
   <meta charset="utf-8">
 </head>
 
+<style>
+  body {
+    background: #FFFFCC;
+  }
+
+  #death {
+    color: #BB0000;
+  }
+</style>
+
 <body>
-  <h1>太陽が昇りました
+  <h1 align="center">🌅太陽が昇りました🌅
     <br></br>
   </h1>
   <div th:unless="${flag}">
@@ -14,7 +24,7 @@
     <script>setTimeout("location.reload()",2000);</script>
   </div>
   <div th:if="${flag eq 1}">
-    <h2>[[${name}]]が殺されました</h2>
+    <h2 id="death">[[${name}]]が殺されました</h2>
     <a href="/noon">昼に移行します</a>
   </div>
   <div th:if="${flag eq 2}">
