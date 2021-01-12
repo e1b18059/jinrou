@@ -18,16 +18,16 @@ public class JinrouAuthConfiguration extends WebSecurityConfigurerAdapter {
    */
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-  auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("password")).roles("USER");
-  auth.inMemoryAuthentication().withUser("user2").password(passwordEncoder().encode("password")).roles("USER");
-  auth.inMemoryAuthentication().withUser("user3").password(passwordEncoder().encode("password")).roles("USER");
-  auth.inMemoryAuthentication().withUser("user4").password(passwordEncoder().encode("password")).roles("USER");
-  auth.inMemoryAuthentication().withUser("user5").password(passwordEncoder().encode("password")).roles("USER");
-  auth.inMemoryAuthentication().withUser("user6").password(passwordEncoder().encode("password")).roles("USER");
-  auth.inMemoryAuthentication().withUser("user7").password(passwordEncoder().encode("password")).roles("USER");
-  auth.inMemoryAuthentication().withUser("user8").password(passwordEncoder().encode("password")).roles("USER");
-  auth.inMemoryAuthentication().withUser("user9").password(passwordEncoder().encode("password")).roles("USER");
-  auth.inMemoryAuthentication().withUser("user10").password(passwordEncoder().encode("password")).roles("USER");
+  auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("a")).roles("USER");
+  auth.inMemoryAuthentication().withUser("user2").password(passwordEncoder().encode("a")).roles("USER");
+  auth.inMemoryAuthentication().withUser("user3").password(passwordEncoder().encode("a")).roles("USER");
+  auth.inMemoryAuthentication().withUser("user4").password(passwordEncoder().encode("a")).roles("USER");
+  auth.inMemoryAuthentication().withUser("user5").password(passwordEncoder().encode("a")).roles("USER");
+  auth.inMemoryAuthentication().withUser("user6").password(passwordEncoder().encode("a")).roles("USER");
+  auth.inMemoryAuthentication().withUser("user7").password(passwordEncoder().encode("a")).roles("USER");
+  auth.inMemoryAuthentication().withUser("user8").password(passwordEncoder().encode("a")).roles("USER");
+  auth.inMemoryAuthentication().withUser("user9").password(passwordEncoder().encode("a")).roles("USER");
+  auth.inMemoryAuthentication().withUser("user10").password(passwordEncoder().encode("a")).roles("USER");
 
   }
 
