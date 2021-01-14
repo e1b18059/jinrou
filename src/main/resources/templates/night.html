@@ -88,17 +88,20 @@
       </div>
 
       <div th:if="${fortune}">
-        <div th:if="${syuzoku eq 1}">
-          <h2>選んだユーザーは「市民側」です</h2>
+        <div th:if="${name}">
+          <div th:if="${syuzoku eq 1}">
+            <h2>選んだユーザー「[[${name}]]」は「市民側」です</h2>
+          </div>
+          <div th:if="${syuzoku eq 2}">
+            <h2>選んだユーザー「[[${name}]]」は「人狼側」です</h2>
+          </div>
+          <a href="/morning">占いを終了し、朝のページに移動する</a>
         </div>
-        <div th:if="${syuzoku eq 2}">
-          <h2>選んだユーザーは「人狼側」です</h2>
-        </div>
-        <a href="/morning">占いを終了し、朝のページに移動する</a>
       </div>
 
       <div th:if="${rolename eq '霊媒師'}">
         <h2>あなたは [[${username}]]「霊媒師」です</h2>
+        <div>死亡した人ならだれでも見ることができます。</div>
         <div th:if="${flag2 eq 1}">
           <div>確認したいユーザーを選択してください</div>
           <p th:if="${user1}">
@@ -135,17 +138,21 @@
       </div>
 
       <div th:if="${shaman}">
-        <div th:if="${syuzoku eq 1}">
-          <h2>選んだユーザーは「市民側」です</h2>
+        <div th:if="${name}">
+          <div th:if="${syuzoku eq 1}">
+            <h2>選んだユーザー「[[${name}]]」は「市民側」です</h2>
+          </div>
+          <div th:if="${syuzoku eq 2}">
+            <h2>選んだユーザー「[[${name}]]」は「人狼側」です</h2>
+          </div>
+          <a href="/morning">霊媒を終了し、朝のページに移動する</a>
         </div>
-        <div th:if="${syuzoku eq 2}">
-          <h2>選んだユーザーは「人狼側」です</h2>
-        </div>
-        <a href="/morning">霊媒を終了し、朝のページに移動する</a>
+
       </div>
 
       <div th:if="${rolename eq '騎士'}">
         <h2>あなたは [[${username}]]「騎士」です</h2>
+        <div>同じ人を毎回守ることも可能です。</div>
         <div th:if="${flag3 eq 1}">
           <div>守りたいユーザーを選択してください</div>
           <p th:if="${user1}">
