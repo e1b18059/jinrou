@@ -152,6 +152,7 @@ public class ControllerNight {
   public String fortune(@PathVariable String name, ModelMap model) {
     int fortune = userMapper.fortune(name);
     model.addAttribute("fortune", fortune);
+    model.addAttribute("name", name);
     model.addAttribute("syuzoku", fortune);
     model.addAttribute("continue", fortune);
     model.addAttribute("deathuser", 2);
@@ -162,6 +163,7 @@ public class ControllerNight {
   public String shaman(@PathVariable String name, ModelMap model) {
     int shaman = userMapper.shaman(name);
     model.addAttribute("shaman", shaman);
+    model.addAttribute("name", name);
     model.addAttribute("syuzoku", shaman);
     model.addAttribute("continue", shaman);
     model.addAttribute("deathuser", 2);
