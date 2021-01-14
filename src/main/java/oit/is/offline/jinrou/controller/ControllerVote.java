@@ -24,6 +24,8 @@ public class ControllerVote {
   public String voteduser; // 投票されたユーザー
   ArrayList<String> aliveplayer = new ArrayList<String>(); // 生きているユーザーのユーザー名
   int apnum;
+  public int votecount = 0;
+  public  int flag = 0;
 
   @Autowired
   Room room;
@@ -71,6 +73,10 @@ public class ControllerVote {
   public String voting(ModelMap model) {
     Vote voting = new Vote();
     int voted = voting.Voting(countUser); // 吊るされるユーザー
+    votecount++;
+    if (votecount == apnum) {
+      flag = 1;
+    }
     if (voted == -1) { // 再投票へ
       revoteflag = 1;
       String username;
@@ -118,10 +124,10 @@ public class ControllerVote {
   @GetMapping("/voteresult")
   public SseEmitter voteresult() {
     final SseEmitter sseEmitter = new SseEmitter();
-    if (revoteflag == 0) {
-      this.acroom.vote(sseEmitter, apnum, countUser, revoteflag);
-    } else if(revoteflag == 1){
-      this.acroom.vote(sseEmitter, apnum, recountUser, revoteflag);
+    if (flag == 0) {
+      this.acroom.vote(sseEmitter, apnum, countUser, flag);
+    } else if(flag == 1){
+      this.acroom.vote(sseEmitter, apnum, recountUser, flag);
     }
     return sseEmitter;
   }
