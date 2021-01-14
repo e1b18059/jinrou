@@ -50,6 +50,8 @@ public class ControllerMain {
       userMapper.initDora(); // 生死情報の初期化
       acroom.resetTime(); // タイマーのリセット
       cv.revoteflag = 0; // 再投票用フラグの初期化
+      cv.flag = 0;
+      cv.votecount = 0;
       cv.voteduser = ""; // 吊されるユーザーの初期化
       for (int i = 0; i < num; i++) {
         cv.countUser[i] = 0; // 投票情報の初期化
@@ -144,6 +146,8 @@ public class ControllerMain {
       }
     }
     cv.revoteflag = 0; // 再投票用フラグの初期化
+    cv.flag = 0;
+    cv.votecount = 0;
     for (int i = 0; i < num; i++) {
       cv.countUser[i] = 0; // 投票情報の初期化
       cv.recountUser[i] = 0; // 投票情報の初期化（再投票用)

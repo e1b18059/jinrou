@@ -24,7 +24,7 @@ public class AsyncRoom {
     try {
       while (true) {// 無限ループ
         TimeUnit.MILLISECONDS.sleep(500);
-        if (room.users.size() < 1) {
+        if (room.users.size() < 5) {
           continue;
         }
         emitter.send(count);
