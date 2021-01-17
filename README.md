@@ -35,7 +35,11 @@ gradlewを実行するために、以下のコマンドを実行して実行権�
 ーションを常時実行することができます。
 ![image](https://user-images.githubusercontent.com/55973528/104833029-31b49d80-58d9-11eb-8fce-47ce67b02e30.png)
 
+![image](https://user-images.githubusercontent.com/55973528/104836131-03da5380-58ef-11eb-87a9-a82eaddc44cd.png)
+
 停止するときは以下のコマンドを実行してください。
+
+![image](https://user-images.githubusercontent.com/55973528/104836133-09d03480-58ef-11eb-8083-91023590c65e.png)
 
 ![image](https://user-images.githubusercontent.com/55973528/104833039-3ed18c80-58d9-11eb-80ec-8f2fe9d84e54.png)
 
