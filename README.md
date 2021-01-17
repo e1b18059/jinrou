@@ -1,25 +1,29 @@
 # 人狼
-![image](https://user-images.githubusercontent.com/55973528/104833061-66c0f000-58d9-11eb-94c2-6d8eb71f448f.png)
+
 ## 概要
 
 このゲームはオンラインでできる人狼です。
 
 DiscordやZoomなどのチャットアプリを使って議論を行うことを前提にしています。
-![image](https://user-images.githubusercontent.com/55973528/104833061-66c0f000-58d9-11eb-94c2-6d8eb71f448f.png)
+
 ## セットアップ
 
 ### Gradleを利用したWebアプリケーションの実行
 
 以下のコマンドを実行して、ディレクトリを移動してください。
 ![image](https://user-images.githubusercontent.com/55973528/104832980-eac6a800-58d8-11eb-8783-7f9f85ea7274.png)
+
 以降のコマンドは jinrou ディレクトリ上で実行してください。
 
 gradlewを実行するために、以下のコマンドを実行して実行権限を与えましょう。
 ![image](https://user-images.githubusercontent.com/55973528/104833002-07fb7680-58d9-11eb-8bd5-8905d7abb251.png)
+
 実行権限を与えたgradlewを実行するために以下のコマンドを実行してください。
 ![image](https://user-images.githubusercontent.com/55973528/104833010-15b0fc00-58d9-11eb-899c-366cc683008e.png)
+
 プロジェクトの実行のために以下のコマンドを実行してください。
 ![image](https://user-images.githubusercontent.com/55973528/104833016-23ff1800-58d9-11eb-92cf-05c819027e6d.png)
+
 実行後ブラウザで以下のURLにアクセスして画像のようなページが表示されていることを確認してください。
 
 [http://150.89.233.209:8080/](http://150.89.233.209:8080/)
@@ -32,18 +36,21 @@ gradlewを実行するために、以下のコマンドを実行して実行権�
 ![image](https://user-images.githubusercontent.com/55973528/104833029-31b49d80-58d9-11eb-8fce-47ce67b02e30.png)
 
 停止するときは以下のコマンドを実行してください。
+
 ![image](https://user-images.githubusercontent.com/55973528/104833039-3ed18c80-58d9-11eb-80ec-8f2fe9d84e54.png)
+
 
 ![image](https://user-images.githubusercontent.com/55973528/104833052-51e45c80-58d9-11eb-8053-5d21b80e1558.png)
 
 
 ## ゲーム説明
-![image](https://user-images.githubusercontent.com/55973528/104833061-66c0f000-58d9-11eb-94c2-6d8eb71f448f.png)
+
 このゲームは人間側と人狼側に分かれ、議論を行う昼の時間と能力を行使する夜の時間を繰り返してお互いの陣営の勝利を目指すゲームです。
+
 5 人から 10 人でゲームを開始することができる。
 
 ## 役職の説明
-![image](https://user-images.githubusercontent.com/55973528/104833061-66c0f000-58d9-11eb-94c2-6d8eb71f448f.png)
+
 ### 人間側
 
 ●平民...何の能力も持たない役職です。議論で勝利に貢献しましょう。
@@ -63,13 +70,13 @@ gradlewを実行するために、以下のコマンドを実行して実行権�
 ●狂人...勝利条件が人狼側の人間です。平民と同様に能力は無く、誰が人狼かを知ることは出来ません。議論の妨害や誘導が主な目的になります。
 
 ## 勝利条件
-![image](https://user-images.githubusercontent.com/55973528/104833061-66c0f000-58d9-11eb-94c2-6d8eb71f448f.png)
+
 ●人間側...人狼を全員殺せば勝利です。 6 人以上で遊ぶときは人狼が 2 人になります。
 
 ●人狼側...人間と人狼が同数になれば勝利です。人間の数には狂人も含まれます。
 
 ## ゲームの流れ
-![image](https://user-images.githubusercontent.com/55973528/104833061-66c0f000-58d9-11eb-94c2-6d8eb71f448f.png)
+
 ➀最初は昼の時間から開始されます。自身の役職が確認できます。人狼ならもう一人の人狼が誰であるかも確認できます。（ 6 人以上で開始した場合）
 
 ➁タイマーが 0 秒になるまで議論を進めましょう。
@@ -84,22 +91,23 @@ gradlewを実行するために、以下のコマンドを実行して実行権�
 ⑥以降は昼と夜が繰り返され人間側か人狼側どちらかの勝利条件が達成されるまでゲームが続きます。
 
 ## 操作説明
-![image](https://user-images.githubusercontent.com/55973528/104833061-66c0f000-58d9-11eb-94c2-6d8eb71f448f.png)
+
 ![image](https://user-images.githubusercontent.com/55973528/104833105-8eb05380-58d9-11eb-87a4-4ba02418f444.png)
 
 はじめの画面で「入室」をクリックしてログインしてください。ユーザーIDとパスワードは以下の通りです。
 
-ユーザーID：user1～user
+ユーザーID：user1～user10
 パスワード：a
-参加する人数までのユーザーを使ってログインしてください（例： 5 人→user1～user
+参加する人数までのユーザーを使ってログインしてください（例： 5 人→user1～user5
 
 ![image](https://user-images.githubusercontent.com/55973528/104833116-a1c32380-58d9-11eb-936b-684ba75c15cc.png)
 
 この画面では現在ルームに入っている人数を確認することができます。人数がそろったら「ゲームスタート」をクリックしてゲームを開始して下さい。
 
-※この時、最初にスタートするユーザーを決めておき、そのユーザーが移動したことを確認してから残りのユーザーが移動してください。
+#### ※この時、最初にスタートするユーザーを決めておき、そのユーザーが移動したことを確認してから残りのユーザーが移動してください。
 
 全員が「ゲームスタート」を押すまでは以下の画像のように「参加者を確認中....」と表示されます。
+
 ![image](https://user-images.githubusercontent.com/55973528/104833122-b1db0300-58d9-11eb-8192-e2cbb627029f.png)
 
 ![image](https://user-images.githubusercontent.com/55973528/104833173-0d0cf580-58da-11eb-8002-45a641b9820a.png)
@@ -122,13 +130,18 @@ gradlewを実行するために、以下のコマンドを実行して実行権�
 
 投票で誰かが選ばれた場合はそのまま夜に移行します。
 
+
 ![image](https://user-images.githubusercontent.com/55973528/104833205-49d8ec80-58da-11eb-8fc3-b6ecc572cc23.png)
+
 
 同率 1 位によって確定しなかった場合は再投票が行われます。
 
+
 ![image](https://user-images.githubusercontent.com/55973528/104833213-58bf9f00-58da-11eb-9206-7437b5a07c07.png)
 
+
 再投票でも確定しなかった場合はだれも処刑されずに夜に移行します。
+
 
 ![image](https://user-images.githubusercontent.com/55973528/104833217-670dbb00-58da-11eb-9fd7-0d3bdb3d7bad.png)
 
@@ -139,7 +152,8 @@ gradlewを実行するために、以下のコマンドを実行して実行権�
 
 ![image](https://user-images.githubusercontent.com/55973528/104833227-73921380-58da-11eb-8d2d-39ac5eaf2648.png)
 
-夜の行動ができる役職は以下のように表示されます。それぞれの行動を終えて朝に移行します。人狼が 2 人いる場合はチャットアプリなどでだれを襲撃するかを相談して下さい。
+夜の行動ができる役職は以下のように表示されます。それぞれの行動を終えて朝に移行します。
+人狼が 2 人いる場合はチャットアプリなどでだれを襲撃するかを相談して下さい。
 
 ![image](https://user-images.githubusercontent.com/55973528/104833235-83a9f300-58da-11eb-983c-749f269e6a3a.png)
 
